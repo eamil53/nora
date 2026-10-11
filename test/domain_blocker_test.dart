@@ -1,9 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nora/models/blocker_category.dart';
 import 'package:nora/providers/app_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+  });
 
   group('Domain Blocker & Legal Iddaa Category Tests', () {
     test('Default categories should contain legal_betting category', () {
@@ -58,6 +63,32 @@ void main() {
         final result = appState.checkDomain(domain);
         expect(result.isBlocked, isFalse, reason: '$domain should not be blocked');
       }
+    });
+
+    test('checkDomain should block dynamic mirror gambling domains (e.g. 1-king-837.club)', () {
+      final appState = AppState();
+
+      final mirrorDomains = [
+        '1-king-837.club',
+        'meritking837.com',
+        'bets10-912.xyz',
+        'jojobet-452.site',
+        'cratos-385.top',
+        'holiganbet999.vip',
+      ];
+
+      for (final domain in mirrorDomains) {
+        final result = appState.checkDomain(domain);
+        expect(result.isBlocked, isTrue, reason: '$domain should be blocked by dynamic mirror engine');
+      }
+    });
+
+    test('addCustomDomain and server sync persistance should update checkDomain', () async {
+      final appState = AppState();
+      await appState.addCustomDomain('new-server-blocked-site.com');
+
+      final result = appState.checkDomain('new-server-blocked-site.com');
+      expect(result.isBlocked, isTrue);
     });
   });
 }

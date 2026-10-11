@@ -1,0 +1,14 @@
+{
+  "Simulator Target Bundle": "com.kumaribirak.nora",
+  "aps": {
+    "alert": {
+      "title": "Nora Bildirim Kampanyası",
+      "body": "Tebrikler! Nora uygulamasında yeni bir başarı rozeti kazandınız."
+    },
+    "badge": 1,
+    "sound": "default"
+  },
+  "custom_data": {
+    "campaign_id": "test_broadcast"
+  }
+}

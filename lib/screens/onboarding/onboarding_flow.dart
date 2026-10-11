@@ -1,58 +1,112 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_strings.dart';
 import '../../models/user_profile.dart';
+import '../../theme/app_colors.dart';
 
 class OnboardingFlow extends StatefulWidget {
   final Function(UserProfile profile) onComplete;
+  final String? languageCode;
 
-  const OnboardingFlow({super.key, required this.onComplete});
+  const OnboardingFlow({
+    super.key,
+    required this.onComplete,
+    this.languageCode = 'tr',
+  });
 
   @override
   State<OnboardingFlow> createState() => _OnboardingFlowState();
 }
 
 class _OnboardingFlowState extends State<OnboardingFlow> {
+  AppStrings get s => AppStrings.get(widget.languageCode);
   final PageController _pageController = PageController();
   int _currentStep = 0;
 
-  // Answers State
-  final List<String> _selectedAddictions = ['Yasa Dışı Bahis', 'Online Casino & Slot'];
-  double _monthlySpend = 7500.0;
+  // Form State
+  late final List<String> _selectedAddictions;
+  late double _monthlySpend;
+  late final List<String> _selectedTriggers;
+  late String _selectedMotivation;
   final double _hoursPerDay = 2.5;
-  final List<String> _selectedTriggers = ['Finansal Stres', 'Sosyal Medya Reklamları'];
-  String _selectedMotivation = 'Borçsuz Bir Hayat ve Aile Huzuru';
 
-  final TextEditingController _customSpendController = TextEditingController(text: '7500');
+  final TextEditingController _customSpendController = TextEditingController();
 
-  final List<String> _addictionOptions = [
-    'Yasa Dışı Bahis (İllegal İddaa)',
-    'Online Casino & Slot (Bonanza vb.)',
-    'Riskli Forex & Kaldıraçlı İşlemler',
-    'Kripto Kumar / İkili Opsiyon',
-    'Canlı Poker & Blackjack',
-  ];
+  List<String> get _addictionOptions => s.isTr
+      ? [
+          'Casino & Slot Siteleri',
+          'Canlı Spor Bahisleri',
+          'Kripto Kaldıraçlı İşlemler',
+          'Sanal Bahis & Oyunlar',
+          'Diğer Şans Oyunları',
+        ]
+      : [
+          'Casino & Slots Online',
+          'Live Sports Betting',
+          'Crypto Leverage & Trading',
+          'Virtual Bets & Games',
+          'Other Games of Chance',
+        ];
 
-  final List<double> _presetSpends = [3000, 5000, 7500, 15000, 30000, 50000];
+  List<double> get _presetSpends => s.isTr
+      ? [1000, 2500, 5000, 10000, 20000, 50000]
+      : [100, 250, 500, 1000, 2000, 5000];
 
-  final List<String> _triggerOptions = [
-    'Finansal Stres ve Borç Baskısı',
-    'Sosyal Medya Reklamları & Pop-uplar',
-    'Gece Saatleri ve Can Sıkıntısı',
-    'Kaybedileni Geri Kazanma Hırsı',
-    'Alkollü Anlar / Duygusal Çöküş',
-  ];
+  List<String> get _triggerOptions => s.isTr
+      ? [
+          'Stres / Can Sıkıntısı',
+          'Maddi Kaybı Kurtarma İsteği (Chasing)',
+          'Yalnızlık / Boş Zaman',
+          'Sosyal Medya & Reklamlar',
+          'Alkol / Gece Saatleri',
+        ]
+      : [
+          'Stress & Boredom',
+          'Loss Chasing Urge',
+          'Loneliness & Free Time',
+          'Social Media & Ads',
+          'Late Nights & Alcohol',
+        ];
 
-  final List<String> _motivationOptions = [
-    'Borçsuz Bir Hayat ve Aile Huzuru',
-    'Gelecek Birikimi ve Finansal Özgürlük',
-    'Zamanı Değerli ve Verimli Kullanmak',
-    'Zihinsel Rahatlama ve Temiz Bir Beyin',
-  ];
+  List<String> get _motivationOptions => s.isTr
+      ? [
+          'Finansal Özgürlük ve Birikim',
+          'Aileme ve Sevdiklerime Karşı Sorumluluk',
+          'Zihinsel Huzur ve Sıfır Stres',
+          'Zamanımı Değerli Şeylere Harcamak',
+          'Kendi İrademe Yeniden Güvenmek',
+        ]
+      : [
+          'Financial Freedom & Wealth',
+          'Responsibility to Loved Ones',
+          'Peace of Mind & Zero Stress',
+          'Reclaiming Wasted Time',
+          'Restoring Self-Respect & Trust',
+        ];
+
+  String get _currency => s.isTr ? '₺' : '\$';
+
+  @override
+  void initState() {
+    super.initState();
+    final isTr = widget.languageCode != 'en';
+    _monthlySpend = isTr ? 2500 : 250;
+    _selectedAddictions = [isTr ? 'Casino & Slot Siteleri' : 'Casino & Slots Online'];
+    _selectedTriggers = [isTr ? 'Stres / Can Sıkıntısı' : 'Stress & Boredom'];
+    _selectedMotivation = isTr ? 'Finansal Özgürlük ve Birikim' : 'Financial Freedom & Wealth';
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _customSpendController.dispose();
+    super.dispose();
+  }
 
   void _nextPage() {
     if (_currentStep < 5) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 350),
-        curve: Curves.easeInOut,
+        curve: Curves.easeInOutCubic,
       );
     } else {
       _finishOnboarding();
@@ -63,7 +117,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     if (_currentStep > 0) {
       _pageController.previousPage(
         duration: const Duration(milliseconds: 350),
-        curve: Curves.easeInOut,
+        curve: Curves.easeInOutCubic,
       );
     }
   }
@@ -76,7 +130,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       selectedTriggers: _selectedTriggers,
       mainMotivation: _selectedMotivation,
       quitDate: DateTime.now(),
-      currencySymbol: '₺',
+      currencySymbol: _currency,
     );
     widget.onComplete(profile);
   }
@@ -84,7 +138,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0B1120),
+      backgroundColor: context.colors.surfaceCanvas,
       body: SafeArea(
         child: Column(
           children: [
@@ -95,7 +149,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                 children: [
                   if (_currentStep > 0)
                     IconButton(
-                      icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white70, size: 20),
+                      icon: Icon(Icons.arrow_back_ios_new, color: context.colors.textPrimary, size: 20),
                       onPressed: _previousPage,
                     )
                   else
@@ -105,7 +159,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                       borderRadius: BorderRadius.circular(8),
                       child: LinearProgressIndicator(
                         value: (_currentStep + 1) / 6,
-                        backgroundColor: Colors.white10,
+                        backgroundColor: context.colors.border,
                         valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF00E676)),
                         minHeight: 8,
                       ),
@@ -114,7 +168,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                   const SizedBox(width: 12),
                   Text(
                     '${_currentStep + 1}/6',
-                    style: const TextStyle(color: Colors.white54, fontWeight: FontWeight.bold),
+                    style: TextStyle(color: context.colors.textSecondary, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -150,7 +204,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF00E676),
-                    foregroundColor: const Color(0xFF0B1120),
+                    foregroundColor: Colors.black,
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
@@ -162,8 +216,10 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                     children: [
                       Text(
                         _currentStep == 0
-                            ? 'Analize Başla'
-                            : (_currentStep == 5 ? 'Planımı Oluştur & Devam Et' : 'Devam Et'),
+                            ? (s.isTr ? 'Analize Başla' : 'Start Assessment')
+                            : (_currentStep == 5
+                                ? (s.isTr ? 'Planımı Oluştur & Devam Et' : 'Generate Plan & Continue')
+                                : (s.isTr ? 'Devam Et' : 'Continue')),
                         style: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -203,10 +259,10 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             ),
           ),
           const SizedBox(height: 32),
-          const Text(
-            'Nora\'ya Hoş Geldiniz',
+          Text(
+            s.isTr ? 'Nora\'ya Hoş Geldiniz' : 'Welcome to Nora',
             style: TextStyle(
-              color: Colors.white,
+              color: context.colors.textPrimary,
               fontSize: 30,
               fontWeight: FontWeight.w800,
               letterSpacing: -0.5,
@@ -214,10 +270,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Kumarı arkada bırakmanın, paranı ve hayatını kendi cebinde tutmanın en güçlü yolu.',
+          Text(
+            s.isTr
+                ? 'Kumarı arkada bırakmanın, paranı ve hayatını kendi cebinde tutmanın en güçlü yolu.'
+                : 'The proven way to leave gambling behind and reclaim your money and your life.',
             style: TextStyle(
-              color: Colors.white70,
+              color: context.colors.textSecondary,
               fontSize: 16,
               height: 1.5,
             ),
@@ -227,17 +285,18 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF1E293B),
+              color: context.colors.surfaceCard,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white10),
+              border: Border.all(color: context.colors.border),
+              boxShadow: context.colors.cardShadows,
             ),
-            child: const Column(
+            child: Column(
               children: [
-                _FeatureRow(icon: Icons.block, text: '7/24 Yasa Dışı Bahis & Casino Engelleme'),
-                SizedBox(height: 12),
-                _FeatureRow(icon: Icons.account_balance_wallet_outlined, text: 'Canlı Para ve Zaman Tasarruf Sayacı'),
-                SizedBox(height: 12),
-                _FeatureRow(icon: Icons.sos, text: 'Kriz Anları için İrade ve Nefes Desteği'),
+                _FeatureRow(icon: Icons.block, text: s.isTr ? '7/24 Yasa Dışı Bahis & Casino Engelleme' : '24/7 Strict Gambling & Betting Shield'),
+                const SizedBox(height: 12),
+                _FeatureRow(icon: Icons.account_balance_wallet_outlined, text: s.isTr ? 'Canlı Para ve Zaman Tasarruf Sayacı' : 'Live Saved Cash & Time Tracker'),
+                const SizedBox(height: 12),
+                _FeatureRow(icon: Icons.sos, text: s.isTr ? 'Kriz Anları için İrade ve Nefes Desteği' : 'Urge Interventions & SOS Breathing Support'),
               ],
             ),
           ),
@@ -254,14 +313,16 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20),
-          const Text(
-            'Hangi alanlar sizi en çok zorluyor?',
-            style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+          Text(
+            s.isTr ? 'Hangi alanlar sizi en çok zorluyor?' : 'Which gambling areas challenge you most?',
+            style: TextStyle(color: context.colors.textPrimary, fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Engelleme kalkanımızı sizin alışkanlıklarınıza göre özelleştireceğiz.',
-            style: TextStyle(color: Colors.white60, fontSize: 15),
+          Text(
+            s.isTr
+                ? 'Engelleme kalkanımızı sizin alışkanlıklarınıza göre özelleştireceğiz.'
+                : 'We will customize your protection shield according to your habits.',
+            style: TextStyle(color: context.colors.textSecondary, fontSize: 15),
           ),
           const SizedBox(height: 24),
           ..._addictionOptions.map((option) {
@@ -282,25 +343,26 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                 child: Container(
                   padding: const EdgeInsets.all(18),
                   decoration: BoxDecoration(
-                    color: isSelected ? const Color(0xFF00E676).withValues(alpha: 0.12) : const Color(0xFF1E293B),
+                    color: isSelected ? const Color(0xFF00E676).withValues(alpha: 0.12) : context.colors.surfaceCard,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: isSelected ? const Color(0xFF00E676) : Colors.white10,
+                      color: isSelected ? const Color(0xFF00E676) : context.colors.border,
                       width: isSelected ? 2 : 1,
                     ),
+                    boxShadow: isSelected ? null : context.colors.cardShadows,
                   ),
                   child: Row(
                     children: [
                       Icon(
                         isSelected ? Icons.check_circle_rounded : Icons.radio_button_unchecked,
-                        color: isSelected ? const Color(0xFF00E676) : Colors.white38,
+                        color: isSelected ? const Color(0xFF00E676) : context.colors.border,
                       ),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Text(
                           option,
                           style: TextStyle(
-                            color: isSelected ? Colors.white : Colors.white70,
+                            color: isSelected ? context.colors.textPrimary : context.colors.textSecondary,
                             fontSize: 16,
                             fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                           ),
@@ -325,14 +387,16 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20),
-          const Text(
-            'Ayda ortalama ne kadar harcıyordunuz?',
-            style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+          Text(
+            s.isTr ? 'Ayda ortalama ne kadar harcıyordunuz?' : 'How much did you spend monthly on average?',
+            style: TextStyle(color: context.colors.textPrimary, fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Gerçek kayıplarınızı görmek kurtuluşun ilk adımıdır.',
-            style: TextStyle(color: Colors.white60, fontSize: 15),
+          Text(
+            s.isTr
+                ? 'Gerçek kayıplarınızı görmek kurtuluşun ilk adımıdır.'
+                : 'Facing your true losses is the first step toward lasting recovery.',
+            style: TextStyle(color: context.colors.textSecondary, fontSize: 15),
           ),
           const SizedBox(height: 28),
 
@@ -340,16 +404,17 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              color: const Color(0xFF1E293B),
+              color: context.colors.surfaceCard,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: const Color(0xFF00E676).withValues(alpha: 0.3)),
+              boxShadow: context.colors.cardShadows,
             ),
             child: Column(
               children: [
-                const Text('Aylık Ortalama Kayıp', style: TextStyle(color: Colors.white54, fontSize: 14)),
+                Text(s.isTr ? 'Aylık Ortalama Kayıp' : 'Average Monthly Loss', style: TextStyle(color: context.colors.textSecondary, fontSize: 14)),
                 const SizedBox(height: 8),
                 Text(
-                  '₺${_monthlySpend.toStringAsFixed(0)}',
+                  '$_currency${_monthlySpend.toStringAsFixed(0)}',
                   style: const TextStyle(
                     color: Color(0xFF00E676),
                     fontSize: 38,
@@ -367,12 +432,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             children: _presetSpends.map((amount) {
               final isSelected = _monthlySpend == amount;
               return ChoiceChip(
-                label: Text('₺${amount.toInt()}'),
+                label: Text('$_currency${amount.toInt()}'),
                 selected: isSelected,
                 selectedColor: const Color(0xFF00E676),
-                backgroundColor: const Color(0xFF1E293B),
+                backgroundColor: context.colors.surfaceCardAlt,
                 labelStyle: TextStyle(
-                  color: isSelected ? const Color(0xFF0B1120) : Colors.white,
+                  color: isSelected ? Colors.black : context.colors.textPrimary,
                   fontWeight: FontWeight.bold,
                 ),
                 onSelected: (selected) {
@@ -391,12 +456,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           TextField(
             controller: _customSpendController,
             keyboardType: TextInputType.number,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: context.colors.textPrimary),
             decoration: InputDecoration(
-              labelText: 'Özel Tutar Girin (₺)',
-              labelStyle: const TextStyle(color: Colors.white54),
+              labelText: s.isTr ? 'Özel Tutar Girin (₺)' : 'Enter Custom Amount (\$_currency)',
+              labelStyle: TextStyle(color: context.colors.textSecondary),
               filled: true,
-              fillColor: const Color(0xFF1E293B),
+              fillColor: context.colors.surfaceCardAlt,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -425,14 +490,16 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20),
-          const Text(
-            'Kumar oynama isteğinizi ne tetikliyor?',
-            style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+          Text(
+            s.isTr ? 'Kumar oynama isteğinizi ne tetikliyor?' : 'What triggers your urge to gamble?',
+            style: TextStyle(color: context.colors.textPrimary, fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Tetikleyicileri bilmek kriz anlarını yönetmeyi kolaylaştırır.',
-            style: TextStyle(color: Colors.white60, fontSize: 15),
+          Text(
+            s.isTr
+                ? 'Tetikleyicileri bilmek kriz anlarını yönetmeyi kolaylaştırır.'
+                : 'Identifying triggers empowers you to prevent relapses.',
+            style: TextStyle(color: context.colors.textSecondary, fontSize: 15),
           ),
           const SizedBox(height: 24),
           ..._triggerOptions.map((option) {
@@ -453,25 +520,26 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: isSelected ? const Color(0xFF6366F1).withValues(alpha: 0.15) : const Color(0xFF1E293B),
+                    color: isSelected ? const Color(0xFF6366F1).withValues(alpha: 0.15) : context.colors.surfaceCard,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: isSelected ? const Color(0xFF6366F1) : Colors.white10,
+                      color: isSelected ? const Color(0xFF6366F1) : context.colors.border,
                       width: isSelected ? 2 : 1,
                     ),
+                    boxShadow: isSelected ? null : context.colors.cardShadows,
                   ),
                   child: Row(
                     children: [
                       Icon(
                         isSelected ? Icons.check_circle : Icons.circle_outlined,
-                        color: isSelected ? const Color(0xFF6366F1) : Colors.white38,
+                        color: isSelected ? const Color(0xFF6366F1) : context.colors.border,
                       ),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Text(
                           option,
                           style: TextStyle(
-                            color: isSelected ? Colors.white : Colors.white70,
+                            color: isSelected ? context.colors.textPrimary : context.colors.textSecondary,
                             fontSize: 15,
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                           ),
@@ -496,14 +564,16 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20),
-          const Text(
-            'En büyük motivasyonunuz nedir?',
-            style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+          Text(
+            s.isTr ? 'En büyük motivasyonunuz nedir?' : 'What is your primary motivation?',
+            style: TextStyle(color: context.colors.textPrimary, fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Neden bu adımı attığınızı her gün size hatırlatacağız.',
-            style: TextStyle(color: Colors.white60, fontSize: 15),
+          Text(
+            s.isTr
+                ? 'Neden bu adımı attığınızı her gün size hatırlatacağız.'
+                : 'We will remind you why you started every single day.',
+            style: TextStyle(color: context.colors.textSecondary, fontSize: 15),
           ),
           const SizedBox(height: 24),
           ..._motivationOptions.map((option) {
@@ -520,25 +590,26 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                 child: Container(
                   padding: const EdgeInsets.all(18),
                   decoration: BoxDecoration(
-                    color: isSelected ? const Color(0xFFF59E0B).withValues(alpha: 0.15) : const Color(0xFF1E293B),
+                    color: isSelected ? const Color(0xFFF59E0B).withValues(alpha: 0.15) : context.colors.surfaceCard,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: isSelected ? const Color(0xFFF59E0B) : Colors.white10,
+                      color: isSelected ? const Color(0xFFF59E0B) : context.colors.border,
                       width: isSelected ? 2 : 1,
                     ),
+                    boxShadow: isSelected ? null : context.colors.cardShadows,
                   ),
                   child: Row(
                     children: [
                       Icon(
                         isSelected ? Icons.stars_rounded : Icons.star_border_rounded,
-                        color: isSelected ? const Color(0xFFF59E0B) : Colors.white38,
+                        color: isSelected ? const Color(0xFFF59E0B) : context.colors.border,
                       ),
                       const SizedBox(width: 14),
                       Expanded(
                         child: Text(
                           option,
                           style: TextStyle(
-                            color: isSelected ? Colors.white : Colors.white70,
+                            color: isSelected ? context.colors.textPrimary : context.colors.textSecondary,
                             fontSize: 16,
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                           ),
@@ -574,14 +645,16 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             child: const Icon(Icons.analytics_rounded, color: Color(0xFF00E676), size: 48),
           ),
           const SizedBox(height: 16),
-          const Text(
-            'Kişisel Analiziniz Hazır!',
-            style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+          Text(
+            s.isTr ? 'Kişisel Analiziniz Hazır!' : 'Your Personal Assessment is Ready!',
+            style: TextStyle(color: context.colors.textPrimary, fontSize: 26, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Nora ile 1 yılda elde edeceğiniz özgürlük tablosu:',
-            style: TextStyle(color: Colors.white60, fontSize: 15),
+          Text(
+            s.isTr
+                ? 'Nora ile 1 yılda elde edeceğiniz özgürlük tablosu:'
+                : 'Your 1-year recovery and freedom projection with Nora:',
+            style: TextStyle(color: context.colors.textSecondary, fontSize: 15),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 28),
@@ -607,10 +680,10 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('1 Yılda Cebinizde Kalacak Tutar', style: TextStyle(color: Colors.white70, fontSize: 13)),
+                      Text(s.isTr ? '1 Yılda Cebinizde Kalacak Tutar' : 'Saved Cash in 1 Year', style: const TextStyle(color: Colors.white70, fontSize: 13)),
                       const SizedBox(height: 4),
                       Text(
-                        '₺${yearlySaved.toStringAsFixed(0)}',
+                        '$_currency${yearlySaved.toStringAsFixed(0)}',
                         style: const TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w800),
                       ),
                     ],
@@ -628,19 +701,20 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1E293B),
+                    color: context.colors.surfaceCard,
                     borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: Colors.white10),
+                    border: Border.all(color: context.colors.border),
+                    boxShadow: context.colors.cardShadows,
                   ),
                   child: Column(
                     children: [
                       const Icon(Icons.access_time_filled_rounded, color: Color(0xFF6366F1), size: 28),
                       const SizedBox(height: 8),
                       Text(
-                        '${yearlyHours.toInt()} Saat',
-                        style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                        s.isTr ? '${yearlyHours.toInt()} Saat' : '${yearlyHours.toInt()} Hours',
+                        style: TextStyle(color: context.colors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      const Text('Kazanılan Zaman', style: TextStyle(color: Colors.white54, fontSize: 12)),
+                      Text(s.isTr ? 'Kazanılan Zaman' : 'Recovered Time', style: TextStyle(color: context.colors.textSecondary, fontSize: 12)),
                     ],
                   ),
                 ),
@@ -650,19 +724,20 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1E293B),
+                    color: context.colors.surfaceCard,
                     borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: Colors.white10),
+                    border: Border.all(color: context.colors.border),
+                    boxShadow: context.colors.cardShadows,
                   ),
                   child: Column(
                     children: [
                       const Icon(Icons.shield_rounded, color: Color(0xFFEF4444), size: 28),
                       const SizedBox(height: 8),
-                      const Text(
+                      Text(
                         '3,850+',
-                        style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(color: context.colors.textPrimary, fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      const Text('Engellenen Site', style: TextStyle(color: Colors.white54, fontSize: 12)),
+                      Text(s.isTr ? 'Engellenen Site' : 'Blocked Websites', style: TextStyle(color: context.colors.textSecondary, fontSize: 12)),
                     ],
                   ),
                 ),
@@ -675,8 +750,9 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.05),
+              color: context.colors.surfaceCardAlt,
               borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: context.colors.border),
             ),
             child: Row(
               children: [
@@ -684,8 +760,10 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Korumayı aktif etmek ve tüm özellikleri kullanmak için son adıma geçin.',
-                    style: TextStyle(color: Colors.white.withValues(alpha: 0.8), fontSize: 13),
+                    s.isTr
+                        ? 'Korumayı aktif etmek ve tüm özellikleri kullanmak için son adıma geçin.'
+                        : 'Proceed to the final step to activate protection and unlock all features.',
+                    style: TextStyle(color: context.colors.textSecondary, fontSize: 13),
                   ),
                 ),
               ],
@@ -712,7 +790,7 @@ class _FeatureRow extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+            style: TextStyle(color: context.colors.textPrimary, fontSize: 14, fontWeight: FontWeight.w500),
           ),
         ),
       ],

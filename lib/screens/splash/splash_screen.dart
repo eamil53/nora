@@ -1,15 +1,17 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:flutter/material.dart';
+import '../../l10n/app_strings.dart';
 
 class SplashScreen extends StatefulWidget {
   final VoidCallback? onFinish;
   final Duration minDuration;
+  final String? languageCode;
 
   const SplashScreen({
     super.key,
     this.onFinish,
     this.minDuration = const Duration(milliseconds: 1400),
+    this.languageCode,
   });
 
   @override
@@ -73,10 +75,28 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Pure pitch-black background
+      backgroundColor: const Color(0xFF010A0E),
       body: Stack(
         children: [
-          // Center Content: Logo Artwork Glow (Alpha-masked directly from PNG, no rectangular box glow)
+          // Ambient deep radial background
+          Positioned.fill(
+            child: Container(
+              decoration: const BoxDecoration(
+                gradient: RadialGradient(
+                  center: Alignment(0, -0.1),
+                  radius: 1.2,
+                  colors: [
+                    Color(0xFF062025),
+                    Color(0xFF010A0E),
+                    Colors.black,
+                  ],
+                  stops: [0.0, 0.65, 1.0],
+                ),
+              ),
+            ),
+          ),
+
+          // Center Content: Logo Emblem with Soft Vignetted Edge & Neon Ambience
           Center(
             child: FadeTransition(
               opacity: _fadeAnimation,
@@ -86,59 +106,82 @@ class _SplashScreenState extends State<SplashScreen>
                   animation: _glowAnimation,
                   builder: (context, child) {
                     final glowFactor = _glowAnimation.value;
-                    return Stack(
-                      alignment: Alignment.center,
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Soft outer neon glow following exact PNG logo pixels
-                        ImageFiltered(
-                          imageFilter: ImageFilter.blur(
-                            sigmaX: 24 * glowFactor,
-                            sigmaY: 24 * glowFactor,
-                          ),
-                          child: ColorFiltered(
-                            colorFilter: ColorFilter.mode(
-                              const Color(0xFF00E676).withValues(alpha: 0.75 * glowFactor),
-                              BlendMode.srcIn,
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            // Soft radial backlight behind the logo emblem
+                            Container(
+                              width: 140,
+                              height: 140,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF00E676).withValues(alpha: 0.30 * glowFactor),
+                                    blurRadius: 55 * glowFactor,
+                                    spreadRadius: 15 * glowFactor,
+                                  ),
+                                  BoxShadow(
+                                    color: const Color(0xFF3BD6B4).withValues(alpha: 0.22 * glowFactor),
+                                    blurRadius: 30 * glowFactor,
+                                    spreadRadius: 5 * glowFactor,
+                                  ),
+                                ],
+                              ),
                             ),
-                            child: Image.asset(
-                              'assets/images/app_logo.png',
-                              width: 175,
-                              fit: BoxFit.contain,
+
+                            // Logo with soft edge feathering to seamlessly blend with background
+                            ShaderMask(
+                              shaderCallback: (rect) {
+                                return const RadialGradient(
+                                  center: Alignment.center,
+                                  radius: 0.85,
+                                  colors: [
+                                    Colors.white,
+                                    Colors.white,
+                                    Colors.transparent,
+                                  ],
+                                  stops: [0.0, 0.72, 1.0],
+                                ).createShader(rect);
+                              },
+                              blendMode: BlendMode.dstIn,
+                              child: Image.asset(
+                                'assets/images/app_logo.png',
+                                width: 190,
+                                height: 190,
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(
+                                    Icons.shield_rounded,
+                                    size: 90,
+                                    color: Color(0xFF00E676),
+                                  );
+                                },
+                              ),
                             ),
-                          ),
+                          ],
                         ),
 
-                        // Sharper inner glow for extra neon radiance
-                        ImageFiltered(
-                          imageFilter: ImageFilter.blur(
-                            sigmaX: 8 * glowFactor,
-                            sigmaY: 8 * glowFactor,
-                          ),
-                          child: ColorFiltered(
-                            colorFilter: ColorFilter.mode(
-                              Colors.white.withValues(alpha: 0.4 * glowFactor),
-                              BlendMode.srcIn,
-                            ),
-                            child: Image.asset(
-                              'assets/images/app_logo.png',
-                              width: 175,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                        ),
+                        const SizedBox(height: 20),
 
-                        // Crisp original logo image on top
-                        Image.asset(
-                          'assets/images/app_logo.png',
-                          width: 175,
-                          fit: BoxFit.contain,
-                          errorBuilder: (context, error, stackTrace) {
-                            return const Icon(
-                              Icons.shield_rounded,
-                              size: 80,
-                              color: Color(0xFF00E676),
-                            );
-                          },
+                        // Nora Brand Typography
+                        Text(
+                          'N O R A',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            color: Colors.white,
+                            letterSpacing: 8.0,
+                            shadows: [
+                              Shadow(
+                                color: const Color(0xFF00E676).withValues(alpha: 0.45 * glowFactor),
+                                blurRadius: 12 * glowFactor,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     );
@@ -159,12 +202,12 @@ class _SplashScreenState extends State<SplashScreen>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'YENİ BİR SEN',
+                    AppStrings.get(widget.languageCode).isTr ? 'YENİ BİR SEN' : 'A NEW YOU',
                     style: TextStyle(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: Colors.white.withValues(alpha: 0.75),
-                      letterSpacing: 3.0,
+                      letterSpacing: 3.5,
                     ),
                   ),
                   const SizedBox(height: 16),
