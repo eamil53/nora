@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Destek & Kriz Masası (Support) | Nora App</title>
+  <meta name="description" content="Nora Uygulaması resmi destek ve yardım merkezi. 7/24 ücretsiz kumar bağımlılığı danışmanlık hatları (YEDAM 115), GamCare desteği ve destek formu." />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Favicon using app_logo.png -->
+  <link rel="icon" type="image/png" href="/images/app_logo.png" />
+  <link rel="apple-touch-icon" href="/images/app_logo.png" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="/" class="brand-link">
+        <img src="/images/app_logo.png" alt="Nora Logo" class="brand-logo-img" />
+        <div class="brand-text-wrap">
+          <span class="brand-title">Nora</span>
+          <span class="brand-badge">SUPPORT</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="/#features" id="subnav-features">Özellikler</a></li>
+        <li><a href="/#calculator" id="subnav-calc">Tasarruf Hesaplayıcı</a></li>
+        <li><a href="/#sos" id="subnav-sos">Dürtü Sörfü</a></li>
+        <li><a href="/support.html" id="subnav-support" class="active">Destek</a></li>
+        <li><a href="/privacy.html" id="subnav-privacy">Gizlilik</a></li>
+        <li><a href="/eula.html" id="subnav-eula">EULA</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="icon-btn lang-switch-btn" id="lang-switch-btn" title="Dili Değiştir / Change Language">
+          🌐 <span id="lang-btn-text">EN</span>
+        </button>
+
+        <button class="icon-btn" id="theme-toggle-btn" title="Tema / Theme">
+          <span id="theme-icon">☀️</span>
+        </button>
+
+        <a href="/" class="cta-btn-primary">
+          <span id="subnav-home-btn">Ana Sayfaya Dön</span>
+        </a>
+
+        <button class="icon-btn mobile-toggle" id="mobile-toggle-btn" aria-label="Menü">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Hero Banner -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb-nav">
+        <a href="/" id="bc-home">Ana Sayfa</a>
+        <span>›</span>
+        <span id="bc-cat">Yardım</span>
+        <span>›</span>
+        <span style="color:var(--primary);" id="bc-current">Destek Masası</span>
+      </div>
+      <h1 class="page-title"><span class="gradient-text" id="page-title-text">Destek & Kriz Merkezi</span></h1>
+      <p class="page-subtitle" id="page-subtitle-text">
+        Biz buradayız, bu yolda asla yalnız değilsin. Teknik yardım, site bildirimleri veya acil danışmanlık için bize dilediğin an ulaşabilirsin.
+      </p>
+    </div>
+  </section>
+
+  <!-- Support Desk Content -->
+  <main class="container">
+    <div class="support-desk-wrap">
+      
+      <!-- Left Column: Helplines & Direct Email -->
+      <div>
+        <h2 style="font-size: 1.8rem; margin-bottom: 24px;" id="support-sec-helplines-title">Acil Yardım & Kriz Hatları</h2>
+
+        <!-- Hotline 1: YEDAM (Türkiye) -->
+        <div class="hotline-card">
+          <span class="hotline-card-badge" id="hotline1-badge">7/24 ÜCRETSİZ & GİZLİ DANIŞMANLIK HATTI (TÜRKİYE)</span>
+          <span class="hotline-num" id="hotline1-phone">115 (YEDAM)</span>
+          <p class="hotline-desc" id="hotline1-desc">
+            Yeşilay Danışmanlık Merkezi; uzman klinik psikologlar ve sosyal hizmet uzmanları eşliğinde kumar bağımlılığıyla mücadele eden bireylere ve ailelerine tamamen ücretsiz, şartsız ve gizli psikososyal destek sunar.
+          </p>
+          <div style="margin-top:14px;">
+            <a href="tel:115" class="cta-btn-primary" style="background:var(--error); box-shadow:0 4px 14px rgba(239,68,68,0.4); color:#fff;" id="hotline1-call-btn">
+              📞 Hemen 115'i Ara (Ücretsiz)
+            </a>
+          </div>
+        </div>
+
+        <!-- Hotline 2: International / GamCare -->
+        <div class="hotline-card" style="border-color: rgba(99, 102, 241, 0.4);">
+          <span class="hotline-card-badge" style="color: var(--secondary);" id="hotline2-badge">ULUSLARARASI DESTEK (GLOBAL SUPPORT)</span>
+          <span class="hotline-num" style="color: var(--secondary);">GamCare & GA</span>
+          <p class="hotline-desc" id="hotline2-desc">
+            Dünya çapında 24 saat canlı destek grupları, bağımlılık danışmanlık forumları ve ücretsiz yardım hatları:
+          </p>
+          <ul style="margin: 10px 0 14px 20px; font-size: 0.88rem; color: var(--text-secondary);">
+            <li><strong id="hotline2-uk">İngiltere / Avrupa:</strong> <a href="https://www.gamcare.org.uk" target="_blank" rel="noopener" style="color:var(--secondary); text-decoration:underline;">gamcare.org.uk</a> (0808 8020 133)</li>
+            <li><strong id="hotline2-us">ABD / Global:</strong> 1-800-522-4700 (National Problem Gambling Helpline)</li>
+            <li><strong>Gamblers Anonymous:</strong> <a href="https://www.gamblersanonymous.org" target="_blank" rel="noopener" style="color:var(--secondary); text-decoration:underline;">gamblersanonymous.org</a></li>
+          </ul>
+        </div>
+
+        <!-- Direct Email -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-lg); padding: 26px;">
+          <h4 style="font-size: 1.15rem; margin-bottom: 8px;" id="email-box-title">📧 Doğrudan Destek E-postası</h4>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 12px; line-height:1.6;" id="email-box-desc">
+            Uygulama teknik sorunları, engellenmeyen yeni bahis alan adı bildirimleri ve fatura/abonelik soruları için:
+          </p>
+          <a href="mailto:destek@noraapp.com" style="color: var(--primary); font-weight: 800; font-size: 1.2rem;">destek@noraapp.com</a>
+          <p style="font-size: 0.78rem; color: var(--text-tertiary); margin-top: 6px;" id="email-box-note">
+            * Destek ekibimiz e-postaları 24 saat içinde yanıtlamaktadır.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive Ticket Form -->
+      <div>
+        <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: var(--radius-xl); padding: 36px; box-shadow: var(--shadow-sm);">
+          <h3 style="font-size: 1.5rem; margin-bottom: 8px;" id="form-box-title">Destek Talebi Gönder</h3>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 24px;" id="form-box-desc">
+            Lütfen sorununuzu veya geri bildiriminizi bize iletin.
+          </p>
+
+          <form class="support-form" id="support-subpage-form">
+            <div class="form-group">
+              <label class="form-label" id="lbl-name">Adınız / Takma Adınız</label>
+              <input type="text" class="form-input" id="input-name" required placeholder="Örn: Deniz" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" id="lbl-email">E-posta Adresiniz</label>
+              <input type="email" class="form-input" required placeholder="ornek@posta.com" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" id="lbl-cat">Konu Seçiniz</label>
+              <select class="form-select">
+                <option id="opt-tech">Teknik Sorun & Hata Bildirimi</option>
+                <option id="opt-block">Engellenmeyen Bahis Sitesi Bildir</option>
+                <option id="opt-sub">Abonelik & Fatura Sorusu</option>
+                <option id="opt-gen">Genel Öneri & Geri Bildirim</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" id="lbl-msg">Mesajınız</label>
+              <textarea class="form-textarea" id="input-msg" required placeholder="Yaşadığınız durumu veya bildirmek istediğiniz siteyi detaylandırın..."></textarea>
+            </div>
+
+            <button type="submit" class="cta-btn-primary" style="justify-content:center; padding:12px;" id="btn-submit">Mesajı Gönder</button>
+            <div class="form-status-msg" id="subpage-form-status"></div>
+          </form>
+        </div>
+
+        <!-- Quick Help Advice -->
+        <div style="margin-top:24px; padding:20px; background:rgba(0, 230, 118, 0.06); border:1px solid var(--border-glow); border-radius:var(--radius-lg);">
+          <h5 style="color:var(--primary); font-size:0.95rem; margin-bottom:6px;" id="advice-title">💡 Kriz Anında Ne Yapmalısın?</h5>
+          <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.6;" id="advice-desc">
+            Ani bir kumar isteği duyuyorsan ana sayfadaki <strong>Dürtü Sörfü</strong> nefes aracını aç. 4 saniye nefes al, 4 saniye tut, 4 saniye ver. Beynindeki dopamin fırtınası ortalama 12 dakika içinde sönecektir.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top-grid">
+        <div class="footer-brand-col">
+          <div class="brand-link">
+            <img src="/images/app_logo.png" alt="Nora" class="brand-logo-img" />
+            <span class="brand-title">Nora</span>
+          </div>
+          <p class="footer-desc" id="footer-desc">
+            Nora, kumar bağımlılığını geride bırakmak, cebindeki parayı korumak ve huzurlu bir hayata adım atmak isteyen herkes için geliştirilmiş tavizsiz koruma kalkanıdır.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title" id="footer-col-quick">Hızlı Bağlantılar</h4>
+          <ul class="footer-links">
+            <li><a href="/#features" id="fl-features">Özellikler</a></li>
+            <li><a href="/#calculator" id="fl-calc">Tasarruf Hesaplayıcı</a></li>
+            <li><a href="/#sos" id="fl-sos">Dürtü Sörfü SOS</a></li>
+            <li><a href="/#faq" id="fl-faq">Sıkça Sorulan Sorular</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title" id="footer-col-legal">Hukuki</h4>
+          <ul class="footer-links">
+            <li><a href="/privacy.html" id="fl-privacy">Gizlilik Politikası (Privacy)</a></li>
+            <li><a href="/eula.html" id="fl-eula">Son Kullanıcı Lisansı (EULA)</a></li>
+            <li><a href="/privacy.html" id="fl-compliance">KVKK & GDPR Uyumluluğu</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title" id="footer-col-support">Destek & Kriz</h4>
+          <ul class="footer-links">
+            <li><a href="/support.html" id="fl-support" style="color:var(--primary);">Destek Masası</a></li>
+            <li><a href="tel:115" id="fl-yedam">Yeşilay YEDAM (115)</a></li>
+            <li><a href="mailto:destek@noraapp.com">destek@noraapp.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          <span id="footer-rights">© 2026 Nora App. Tüm hakları saklıdır.</span>
+          <br />
+          <span class="disclaimer-badge" id="footer-medical-note">
+            Yasal Uyarı: Nora bir davranışsal ve teknolojik kalkan aracıdır; klinik tıbbi teşhis veya psikiyatri tedavi hizmeti yerine geçmez.
+          </span>
+        </div>
+        <div style="display:flex; gap:16px;">
+          <a href="/privacy.html" style="color:var(--text-tertiary); font-size:0.8rem;">Gizlilik</a>
+          <a href="/eula.html" style="color:var(--text-tertiary); font-size:0.8rem;">EULA</a>
+          <a href="/support.html" style="color:var(--primary); font-size:0.8rem;">Destek</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/subpage.js"></script>
+</body>
+</html>

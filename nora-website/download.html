@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Kalkanı İndir & Mobil Uygulama | Nora App</title>
+  <meta name="description" content="Nora kalkanı şu anda iOS ve Android mobil platformlarında aktiftir. Web sürümü çok yakında hizmetinizde olacaktır. Hemen telefonunuza indirin." />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Favicon using app_logo.png -->
+  <link rel="icon" type="image/png" href="/images/app_logo.png" />
+  <link rel="apple-touch-icon" href="/images/app_logo.png" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="/" class="brand-link">
+        <img src="/images/app_logo.png" alt="Nora Logo" class="brand-logo-img" />
+        <div class="brand-text-wrap">
+          <span class="brand-title">Nora</span>
+          <span class="brand-badge">MOBILE</span>
+        </div>
+      </a>
+
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="/#features" id="subnav-features">Özellikler</a></li>
+        <li><a href="/#calculator" id="subnav-calc">Tasarruf Hesaplayıcı</a></li>
+        <li><a href="/#sos" id="subnav-sos">Dürtü Sörfü</a></li>
+        <li><a href="/support.html" id="subnav-support">Destek</a></li>
+        <li><a href="/privacy.html" id="subnav-privacy">Gizlilik</a></li>
+        <li><a href="/eula.html" id="subnav-eula">EULA</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="icon-btn lang-switch-btn" id="lang-switch-btn" title="Dili Değiştir / Change Language">
+          🌐 <span id="lang-btn-text">EN</span>
+        </button>
+
+        <button class="icon-btn" id="theme-toggle-btn" title="Tema / Theme">
+          <span id="theme-icon">☀️</span>
+        </button>
+
+        <a href="/" class="cta-btn-primary">
+          <span id="subnav-home-btn">Ana Sayfaya Dön</span>
+        </a>
+
+        <button class="icon-btn mobile-toggle" id="mobile-toggle-btn" aria-label="Menü">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Hero Banner -->
+  <section class="page-hero">
+    <div class="container" style="text-align:center;">
+      <div class="breadcrumb-nav" style="justify-content:center;">
+        <a href="/" id="bc-home">Ana Sayfa</a>
+        <span>›</span>
+        <span id="bc-cat">Uygulama</span>
+        <span>›</span>
+        <span style="color:var(--primary);" id="bc-current">Uygulamayı İndir</span>
+      </div>
+
+      <div class="hero-badge-pill" style="margin-bottom:16px;">
+        <span class="pulse-dot"></span>
+        <span id="download-hero-badge">🚀 WEB SÜRÜMÜ ÇOK YAKINDA • ŞU AN MOBİLDE AKTİF</span>
+      </div>
+
+      <h1 class="page-title"><span class="gradient-text" id="page-title-text">Web Kalkanı Çok Yakında Hizmetinizde!</span></h1>
+      <p class="page-subtitle" id="page-subtitle-text" style="margin: 0 auto;">
+        Nora'nın tavizsiz engelleme ve katı koruma mekanizması şu anda yalnızca mobil platformlarda (iOS ve Android) tam sistem entegrasyonuyla aktiftir. Cebindeki parayı ve huzurunu korumak için Nora'yı hemen telefonuna indirebilirsin.
+      </p>
+    </div>
+  </section>
+
+  <!-- Download Cards & QR Showcase -->
+  <main class="container">
+    <div class="download-page-grid">
+      
+      <!-- iOS App Store Card -->
+      <div class="download-platform-card">
+        <div class="platform-icon-circle">
+          <svg style="width:36px; height:36px; fill:var(--text-primary);" viewBox="0 0 24 24">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-.98 1.71-.85 2.73.99.08 2.02-.53 2.56-1.23z"/>
+          </svg>
+        </div>
+
+        <span class="platform-badge" id="ios-card-badge">iOS İÇİN AKTİF</span>
+        <h2 style="font-size: 1.8rem; margin-bottom: 6px;" id="ios-card-title">Apple App Store</h2>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;" id="ios-card-compat">
+          iOS 16.0 veya üzeri • iPhone & iPad Uyumlu
+        </p>
+
+        <!-- QR Code Simulation SVG -->
+        <div class="platform-qr-box">
+          <svg width="150" height="150" viewBox="0 0 100 100" fill="#000000">
+            <!-- Corner marker 1 -->
+            <rect x="5" y="5" width="30" height="30" fill="#000"/>
+            <rect x="10" y="10" width="20" height="20" fill="#fff"/>
+            <rect x="15" y="15" width="10" height="10" fill="#000"/>
+            <!-- Corner marker 2 -->
+            <rect x="65" y="5" width="30" height="30" fill="#000"/>
+            <rect x="70" y="10" width="20" height="20" fill="#fff"/>
+            <rect x="75" y="15" width="10" height="10" fill="#000"/>
+            <!-- Corner marker 3 -->
+            <rect x="5" y="65" width="30" height="30" fill="#000"/>
+            <rect x="10" y="70" width="20" height="20" fill="#fff"/>
+            <rect x="15" y="75" width="10" height="10" fill="#000"/>
+            <!-- Random Data Pixels -->
+            <rect x="42" y="10" width="6" height="6"/>
+            <rect x="52" y="14" width="6" height="6"/>
+            <rect x="45" y="24" width="6" height="6"/>
+            <rect x="12" y="42" width="6" height="6"/>
+            <rect x="24" y="50" width="6" height="6"/>
+            <rect x="42" y="42" width="16" height="16" fill="#00e676"/>
+            <rect x="65" y="42" width="6" height="6"/>
+            <rect x="75" y="52" width="6" height="6"/>
+            <rect x="85" y="42" width="6" height="6"/>
+            <rect x="45" y="65" width="6" height="6"/>
+            <rect x="55" y="75" width="6" height="6"/>
+            <rect x="45" y="85" width="6" height="6"/>
+            <rect x="75" y="70" width="6" height="6"/>
+            <rect x="85" y="80" width="6" height="6"/>
+          </svg>
+        </div>
+        <span style="font-size:0.75rem; color:var(--text-tertiary); font-weight:700;" id="ios-scan-hint">
+          📱 Kameranla Tara ve Anında İndir
+        </span>
+
+        <div style="margin-top:24px; width:100%;">
+          <a href="#" class="cta-btn-primary" style="width:100%; justify-content:center; padding:14px;">
+            <svg style="width:20px; height:20px; fill:#070a12;" viewBox="0 0 24 24">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.62-.75 1.04-1.8 0.92-2.85-.9.04-1.99.6-2.63 1.35-.57.65-.98 1.71-.85 2.73.99.08 2.02-.53 2.56-1.23z"/>
+            </svg>
+            <span id="ios-card-btn-text">App Store'dan İndir</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Android Google Play Card -->
+      <div class="download-platform-card">
+        <div class="platform-icon-circle">
+          <svg style="width:36px; height:36px; fill:var(--text-primary);" viewBox="0 0 24 24">
+            <path d="M3.609 1.814L13.793 12 3.61 22.186a2.22 2.22 0 0 1-.61-.954V2.768c.15-.36.37-.69.61-.954zm11.603 11.603l2.368 2.368-12.012 6.84 9.644-9.208zm0-2.834L5.568 1.373l12.012 6.84-2.368 2.37zm1.417 1.417l2.84 1.616c1.162.662 1.162 1.748 0 2.41l-2.84 1.616-2.227-2.227 2.227-2.215z"/>
+          </svg>
+        </div>
+
+        <span class="platform-badge" style="background:rgba(99,102,241,0.15); color:var(--secondary); border-color:rgba(99,102,241,0.3);" id="android-card-badge">ANDROID İÇİN AKTİF</span>
+        <h2 style="font-size: 1.8rem; margin-bottom: 6px;" id="android-card-title">Google Play Store</h2>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 14px;" id="android-card-compat">
+          Android 9.0 veya üzeri • Tüm Telefon & Tabletler
+        </p>
+
+        <!-- QR Code Simulation SVG -->
+        <div class="platform-qr-box">
+          <svg width="150" height="150" viewBox="0 0 100 100" fill="#000000">
+            <!-- Corner marker 1 -->
+            <rect x="5" y="5" width="30" height="30" fill="#000"/>
+            <rect x="10" y="10" width="20" height="20" fill="#fff"/>
+            <rect x="15" y="15" width="10" height="10" fill="#000"/>
+            <!-- Corner marker 2 -->
+            <rect x="65" y="5" width="30" height="30" fill="#000"/>
+            <rect x="70" y="10" width="20" height="20" fill="#fff"/>
+            <rect x="75" y="15" width="10" height="10" fill="#000"/>
+            <!-- Corner marker 3 -->
+            <rect x="5" y="65" width="30" height="30" fill="#000"/>
+            <rect x="10" y="70" width="20" height="20" fill="#fff"/>
+            <rect x="15" y="75" width="10" height="10" fill="#000"/>
+            <!-- Random Data Pixels -->
+            <rect x="42" y="12" width="6" height="6"/>
+            <rect x="50" y="18" width="6" height="6"/>
+            <rect x="42" y="24" width="6" height="6"/>
+            <rect x="16" y="45" width="6" height="6"/>
+            <rect x="22" y="52" width="6" height="6"/>
+            <rect x="42" y="42" width="16" height="16" fill="#6366f1"/>
+            <rect x="68" y="45" width="6" height="6"/>
+            <rect x="78" y="50" width="6" height="6"/>
+            <rect x="88" y="42" width="6" height="6"/>
+            <rect x="48" y="68" width="6" height="6"/>
+            <rect x="52" y="78" width="6" height="6"/>
+            <rect x="45" y="88" width="6" height="6"/>
+            <rect x="72" y="72" width="6" height="6"/>
+            <rect x="82" y="82" width="6" height="6"/>
+          </svg>
+        </div>
+        <span style="font-size:0.75rem; color:var(--text-tertiary); font-weight:700;" id="android-scan-hint">
+          📱 Kameranla Tara ve Anında İndir
+        </span>
+
+        <div style="margin-top:24px; width:100%;">
+          <a href="#" class="cta-btn-primary" style="width:100%; justify-content:center; padding:14px; background:linear-gradient(135deg, var(--secondary), #4f46e5); color:#fff; box-shadow:0 4px 18px var(--secondary-glow);">
+            <svg style="width:20px; height:20px; fill:#fff;" viewBox="0 0 24 24">
+              <path d="M3.609 1.814L13.793 12 3.61 22.186a2.22 2.22 0 0 1-.61-.954V2.768c.15-.36.37-.69.61-.954zm11.603 11.603l2.368 2.368-12.012 6.84 9.644-9.208zm0-2.834L5.568 1.373l12.012 6.84-2.368 2.37zm1.417 1.417l2.84 1.616c1.162.662 1.162 1.748 0 2.41l-2.84 1.616-2.227-2.227 2.227-2.215z"/>
+            </svg>
+            <span id="android-card-btn-text">Google Play'den İndir</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Why Mobile First Section -->
+    <div style="text-align:center; margin-top:20px;">
+      <h3 style="font-size: 2rem; margin-bottom: 10px;" id="why-mobile-head">Neden Şu Anda Sadece Mobilde Aktif?</h3>
+    </div>
+
+    <div class="why-mobile-grid">
+      <div class="why-mobile-card">
+        <h4 style="font-size: 1.25rem; margin-bottom: 10px; color: var(--primary);" id="why1-title">🛡️ Sistem Düzeyinde Katı Kalkan</h4>
+        <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6;" id="why1-desc">
+          Kumar sitelerini ve casino uygulamalarını tamamen engelleyebilmek için iOS ve Android'in yerel DNS ve Ekran Süresi çekirdeğine entegre çalışıyoruz.
+        </p>
+      </div>
+
+      <div class="why-mobile-card">
+        <h4 style="font-size: 1.25rem; margin-bottom: 10px; color: var(--secondary);" id="why2-title">⏱️ 7/24 Yanında & En Zayıf Anlarında</h4>
+        <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6;" id="why2-desc">
+          Kumar dürtüsü en çok yalnız, yatakta veya stresli anlarda telefonda ortaya çıkar. Nora, zayıf anında anında devreye girerek paranı korur.
+        </p>
+      </div>
+
+      <div class="why-mobile-card">
+        <h4 style="font-size: 1.25rem; margin-bottom: 10px; color: var(--amber);" id="why3-title">🔒 Bypass Edilemez Güvenlik PIN'i</h4>
+        <p style="font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6;" id="why3-desc">
+          Anlık krizlerde kalkanı devre dışı bırakmayı veya uygulamayı kaldırmayı engelleyen özel güvenlik gecikmesi ve koruma mekanizması.
+        </p>
+      </div>
+    </div>
+
+    <!-- Web Shield Early Access Box -->
+    <div class="early-access-box">
+      <div style="font-size: 2.2rem; margin-bottom: 12px;">💻</div>
+      <h3 style="font-size: 1.85rem; margin-bottom: 10px;" id="early-access-head">Web Kalkanı Çıktığında İlk Senin Haberin Olsun</h3>
+      <p style="font-size: 1rem; color: var(--text-secondary); max-width: 620px; margin: 0 auto 24px; line-height: 1.6;" id="early-access-sub">
+        Chrome, Safari, macOS ve Windows için geliştirdiğimiz web engelleme uzantısı tamamlandığında erken erişim davetiyesi almak için e-postanı bırak.
+      </p>
+
+      <form class="early-access-form" id="early-access-form">
+        <input type="email" class="form-input" id="early-email-input" required placeholder="E-posta adresinizi giriniz..." style="padding:14px 20px; font-size:1rem;" />
+        <button type="submit" class="cta-btn-primary" style="white-space:nowrap; padding:14px 28px;">
+          <span id="early-access-btn-text">Bana Haber Ver</span>
+        </button>
+      </form>
+      <div class="form-status-msg" id="early-status-msg" style="max-width:520px; margin:16px auto 0;"></div>
+    </div>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top-grid">
+        <div class="footer-brand-col">
+          <div class="brand-link">
+            <img src="/images/app_logo.png" alt="Nora" class="brand-logo-img" />
+            <span class="brand-title">Nora</span>
+          </div>
+          <p class="footer-desc" id="footer-desc">
+            Nora, kumar bağımlılığını geride bırakmak, cebindeki parayı korumak ve huzurlu bir hayata adım atmak isteyen herkes için geliştirilmiş tavizsiz koruma kalkanıdır.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title" id="footer-col-quick">Hızlı Bağlantılar</h4>
+          <ul class="footer-links">
+            <li><a href="/#features" id="fl-features">Özellikler</a></li>
+            <li><a href="/#calculator" id="fl-calc">Tasarruf Hesaplayıcı</a></li>
+            <li><a href="/#sos" id="fl-sos">Dürtü Sörfü SOS</a></li>
+            <li><a href="/#faq" id="fl-faq">Sıkça Sorulan Sorular</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title" id="footer-col-legal">Hukuki</h4>
+          <ul class="footer-links">
+            <li><a href="/privacy.html" id="fl-privacy">Gizlilik Politikası (Privacy)</a></li>
+            <li><a href="/eula.html" id="fl-eula">Son Kullanıcı Lisansı (EULA)</a></li>
+            <li><a href="/privacy.html" id="fl-compliance">KVKK & GDPR Uyumluluğu</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-col-title" id="footer-col-support">Destek & Kriz</h4>
+          <ul class="footer-links">
+            <li><a href="/support.html" id="fl-support">Destek Masası</a></li>
+            <li><a href="tel:115" id="fl-yedam">Yeşilay YEDAM (115)</a></li>
+            <li><a href="mailto:destek@noraapp.com">destek@noraapp.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          <span id="footer-rights">© 2026 Nora App. Tüm hakları saklıdır.</span>
+          <br />
+          <span class="disclaimer-badge" id="footer-medical-note">
+            Yasal Uyarı: Nora bir davranışsal ve teknolojik kalkan aracıdır; klinik tıbbi teşhis veya psikiyatri tedavi hizmeti yerine geçmez.
+          </span>
+        </div>
+        <div style="display:flex; gap:16px;">
+          <a href="/privacy.html" style="color:var(--text-tertiary); font-size:0.8rem;">Gizlilik</a>
+          <a href="/eula.html" style="color:var(--text-tertiary); font-size:0.8rem;">EULA</a>
+          <a href="/support.html" style="color:var(--text-tertiary); font-size:0.8rem;">Destek</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/subpage.js"></script>
+</body>
+</html>
