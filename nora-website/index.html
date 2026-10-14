@@ -26,6 +26,9 @@
 </head>
 <body>
 
+  <!-- Atmospheric Healing Ambient Canvas -->
+  <canvas id="healing-canvas"></canvas>
+
   <!-- =========================================================================
        SITE HEADER & NAVIGATION
        ========================================================================= -->
@@ -146,9 +149,9 @@
           <div class="deck-shield-header">
             <div class="deck-live-badge">
               <span class="pulse-dot"></span>
-              <span>7/24 TAVİZSİZ KALKAN AKTİF</span>
+              <span id="bento-live-badge-text">7/24 TAVİZSİZ KALKAN AKTİF</span>
             </div>
-            <span style="font-size:0.75rem; color:var(--primary); font-weight:700;">PIN KORUMALI</span>
+            <span style="font-size:0.75rem; color:var(--primary); font-weight:700;" id="bento-pin-text">PIN KORUMALI</span>
           </div>
 
           <div class="deck-shield-grid">
@@ -159,7 +162,7 @@
 
             <div class="deck-shield-stats">
               <span class="deck-shield-title" id="deck-shield-title">Sistem Düzeyinde Katı Filtre</span>
-              <span class="deck-shield-desc">DNS & yerel kalkan devrede • 0 Sızıntı • Anlık krizde kapatılamaz</span>
+              <span class="deck-shield-desc" id="deck-shield-desc">DNS & yerel kalkan devrede • 0 Sızıntı • Anlık krizde kapatılamaz</span>
             </div>
           </div>
 
@@ -181,32 +184,32 @@
           <!-- Bento Card 2: Financial Freedom & Streak -->
           <div class="deck-card">
             <div class="deck-metric-head">
-              <span style="font-size:0.75rem; color:var(--text-tertiary); font-weight:700; text-transform:uppercase;">TEMİZ GÜN SAYACI</span>
-              <span class="deck-metric-badge">🔥 GÜÇLÜ İRADE</span>
+              <span style="font-size:0.75rem; color:var(--text-tertiary); font-weight:700; text-transform:uppercase;" id="bento-streak-title">TEMİZ GÜN SAYACI</span>
+              <span class="deck-metric-badge" id="bento-streak-badge">🔥 GÜÇLÜ İRADE</span>
             </div>
-            <div class="deck-metric-num" style="color:var(--primary);">42. GÜN</div>
-            <span style="font-size:0.82rem; color:var(--text-secondary); font-weight:600;">₺63.500 Kumardan Kurtarıldı</span>
+            <div class="deck-metric-num" style="color:var(--primary);" id="bento-streak-val">42. GÜN</div>
+            <span style="font-size:0.82rem; color:var(--text-secondary); font-weight:600;" id="bento-streak-sub">₺63.500 Kumardan Kurtarıldı</span>
 
             <div class="deck-progress-bar">
               <div class="deck-progress-fill"></div>
             </div>
-            <span style="font-size:0.7rem; color:var(--text-tertiary); display:block; margin-top:5px;">%84 • 60 Gün Şampiyonluk Kalkanına Az Kaldı</span>
+            <span style="font-size:0.7rem; color:var(--text-tertiary); display:block; margin-top:5px;" id="bento-streak-note">%84 • 60 Gün Şampiyonluk Kalkanına Az Kaldı</span>
           </div>
 
           <!-- Bento Card 3: Urge Surfing SOS Trigger -->
           <div class="deck-card deck-sos-card">
             <div>
               <div class="deck-metric-head">
-                <span style="font-size:0.75rem; color:var(--text-tertiary); font-weight:700; text-transform:uppercase;">DÜRTÜ SÖRFÜ</span>
-                <span style="font-size:0.72rem; color:#ef4444; font-weight:800;">🚨 15 DK KURALI</span>
+                <span style="font-size:0.75rem; color:var(--text-tertiary); font-weight:700; text-transform:uppercase;" id="bento-sos-title">DÜRTÜ SÖRFÜ</span>
+                <span style="font-size:0.72rem; color:#ef4444; font-weight:800;" id="bento-sos-rule">🚨 15 DK KURALI</span>
               </div>
-              <p style="font-size:0.78rem; color:var(--text-secondary); margin-top:6px; line-height:1.4;">
+              <p style="font-size:0.78rem; color:var(--text-secondary); margin-top:6px; line-height:1.4;" id="bento-sos-desc">
                 Dürtüler 15 dakikada söner. Savaşma, dalgayı yönet.
               </p>
             </div>
 
             <a href="#sos" class="deck-sos-btn">
-              <span>🧘 Nefes Simülatörünü Aç</span>
+              <span id="bento-sos-btn-text">🧘 Nefes Simülatörünü Aç</span>
             </a>
           </div>
 
@@ -216,11 +219,11 @@
         <div class="deck-card" style="padding:14px 20px; display:flex; align-items:center; justify-content:space-between;">
           <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:1.1rem;">🔒</span>
-            <span style="font-size:0.8rem; font-weight:700; color:var(--text-secondary);">
+            <span style="font-size:0.8rem; font-weight:700; color:var(--text-secondary);" id="bento-privacy-desc">
               %100 Cihaz İçi Şifreleme • Verileriniz Asla Satılmaz
             </span>
           </div>
-          <a href="/privacy.html" style="font-size:0.78rem; color:var(--primary); font-weight:700;">Detaylar ›</a>
+          <a href="/privacy.html" style="font-size:0.78rem; color:var(--primary); font-weight:700;" id="bento-privacy-link">Detaylar ›</a>
         </div>
 
       </div>
@@ -330,6 +333,197 @@
   </section>
 
   <!-- =========================================================================
+       EMOTIONAL CONTRAST SECTION: TWO REALITIES
+       ========================================================================= -->
+  <section class="section-padding contrast-section reveal-on-scroll" id="contrast">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag" id="contrast-tag">ZİHİNSEL DÖNÜŞÜM</span>
+        <h2 class="section-title" id="contrast-title">Kumarın Cehennemi vs. Nora ile Özgürlük</h2>
+        <p class="section-subtitle" id="contrast-sub">
+          Aynı insan, aynı hayat, iki bambaşka gelecek. Hangi tarafta uyanmak istediğine bugün karar ver.
+        </p>
+      </div>
+
+      <div class="contrast-grid">
+        <!-- Card 1: The Trap -->
+        <div class="contrast-card contrast-card-dark">
+          <div>
+            <div class="contrast-badge dark">
+              <span>🥀</span>
+              <span id="c1-badge">Kumarın Bataklığı (Tükeniş)</span>
+            </div>
+            <h3 class="contrast-card-title" id="c1-title">Sahte Bir Heyecan, Gerçek Bir Enkaz</h3>
+            <p class="contrast-card-desc" id="c1-desc">
+              Kumar seni zengin etmez; senden zamanını, saygınlığını, paranı ve sevdiklerinin sana olan güvenini çalar.
+            </p>
+
+            <ul class="contrast-list">
+              <li class="contrast-item">
+                <span class="contrast-item-icon">✕</span>
+                <span id="c1-i1">Gece 03:42'de buz gibi soğuk terlerle basılan son kuponlar ve kaçan uykular.</span>
+              </li>
+              <li class="contrast-item">
+                <span class="contrast-item-icon">✕</span>
+                <span id="c1-i2">"Zararı çıkarıp hemen bırakacağım" yalanıyla derinleşen borç girdabı.</span>
+              </li>
+              <li class="contrast-item">
+                <span class="contrast-item-icon">✕</span>
+                <span id="c1-i3">Eşine, ailene ve dostlarına söylenen tükenmiş yalanlar, silinen banka SMS'leri.</span>
+              </li>
+              <li class="contrast-item">
+                <span class="contrast-item-icon">✕</span>
+                <span id="c1-i4">Maaş yattıktan sonraki 15 dakikada gelen çaresizlik ve panik ataklar.</span>
+              </li>
+              <li class="contrast-item">
+                <span class="contrast-item-icon">✕</span>
+                <span id="c1-i5">Sürekli gizlenme, telefonunu birilerinden saklama ve eriyen özsaygın.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="contrast-footer-note" id="c1-foot">
+            ⚠️ Bu döngü kendi kendine durmaz. Bugün kırmazsan yarın daha pahalıya mal olacak.
+          </div>
+        </div>
+
+        <!-- Card 2: The Rebirth -->
+        <div class="contrast-card contrast-card-light">
+          <div>
+            <div class="contrast-badge light">
+              <span>🌿</span>
+              <span id="c2-badge">Nora ile Hayat (Özgürlük)</span>
+            </div>
+            <h3 class="contrast-card-title" id="c2-title">Huzurlu Zihin, Kurtarılan Gelecek</h3>
+            <p class="contrast-card-desc" id="c2-desc">
+              Kalkan devreye girdiğinde zayıf anlarında bile güvendesin. Kumar siteleri engellenir, hayatın sana geri döner.
+            </p>
+
+            <ul class="contrast-list">
+              <li class="contrast-item">
+                <span class="contrast-item-icon">✓</span>
+                <span id="c2-i1">Yastığa başını koyduğunda gelen derin, kesintisiz ve vicdanı rahat bir uyku.</span>
+              </li>
+              <li class="contrast-item">
+                <span class="contrast-item-icon">✓</span>
+                <span id="c2-i2">Cebinde kalan yüz binlerce lira; çocuklarına ve sevdiklerine gururla aldığın hediyeler.</span>
+              </li>
+              <li class="contrast-item">
+                <span class="contrast-item-icon">✓</span>
+                <span id="c2-i3">Telefonunun ekranını kimseden saklamak zorunda kalmamanın eşsiz ferahlığı.</span>
+              </li>
+              <li class="contrast-item">
+                <span class="contrast-item-icon">✓</span>
+                <span id="c2-i4">Her geçen gün yükselen özsaygın ve gözlerindeki o eski canlı ışıltının geri dönüşü.</span>
+              </li>
+              <li class="contrast-item">
+                <span class="contrast-item-icon">✓</span>
+                <span id="c2-i5">7/24 arkanda duran, 50.000+ kumar sitesini sistem düzeyinde kilitleyen tavizsiz kalkan.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="contrast-footer-note" style="color:var(--primary); font-weight:700;" id="c2-foot">
+            🛡️ Yalnız değilsin. Binlerce insan bu kalkanla temiz kaldı. Sıra sende.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       5-YEAR LIFE DIVERGENCE TIMELINE SLIDER
+       ========================================================================= -->
+  <section class="section-padding timeline-section reveal-on-scroll" id="timeline" style="background: var(--bg-canvas-subtle);">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag" id="timeline-tag">GELECEK SİMÜLATÖRÜ</span>
+        <h2 class="section-title" id="timeline-title">Zaman Tüneli: Geleceğin İki Yolu</h2>
+        <p class="section-subtitle" id="timeline-sub">
+          Aşağıdaki zaman çubuğunu kaydırarak kumarla devam etmek ile Nora kalkanıyla yaşamak arasındaki devasa kader farkını gör.
+        </p>
+      </div>
+
+      <div class="timeline-box">
+        <div class="timeline-slider-wrap">
+          <input type="range" min="0" max="4" step="1" value="2" class="timeline-range-slider" id="timeline-slider" />
+          <div class="timeline-steps-labels">
+            <span data-step="0">1. Ay</span>
+            <span data-step="1">6. Ay</span>
+            <span data-step="2" class="active-step">1. Yıl</span>
+            <span data-step="3">3. Yıl</span>
+            <span data-step="4">5. Yıl</span>
+          </div>
+        </div>
+
+        <div class="divergence-grid">
+          <!-- Gambling Path -->
+          <div class="divergence-card divergence-card-dark">
+            <div class="divergence-head">
+              <span>🥀</span>
+              <span id="t-dark-head">Kumarla Devam Edilirse (1. Yıl)</span>
+            </div>
+            <p class="divergence-narrative" id="t-dark-narrative">
+              Ek hesaplar ve kredi limitleri tamamen tükendi. Yasal icra tebligatları kapıda, evde sürekli kavga ve gizlenen borç stresi hakim.
+            </p>
+            <div class="divergence-meter-group">
+              <div class="divergence-meter-item">
+                <div class="divergence-meter-header">
+                  <span id="t-dark-m1-lbl">Mali Kayıp</span>
+                  <span id="t-dark-m1-val">-₺240.000</span>
+                </div>
+                <div class="divergence-bar-track">
+                  <div class="divergence-bar-fill" id="t-dark-m1-bar" style="width: 65%;"></div>
+                </div>
+              </div>
+              <div class="divergence-meter-item">
+                <div class="divergence-meter-header">
+                  <span id="t-dark-m2-lbl">Ruhsal Çöküş</span>
+                  <span id="t-dark-m2-val">%80 Panik & Depresyon</span>
+                </div>
+                <div class="divergence-bar-track">
+                  <div class="divergence-bar-fill" id="t-dark-m2-bar" style="width: 80%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nora Path -->
+          <div class="divergence-card divergence-card-light">
+            <div class="divergence-head">
+              <span>🌿</span>
+              <span id="t-light-head">Nora ile Özgür Kalınırsa (1. Yıl)</span>
+            </div>
+            <p class="divergence-narrative" id="t-light-narrative">
+              Bir yıldır kumar oynamıyorsun. Bankada ₺240.000 birikim oluştu. Ailene güvenle sarılıyorsun, uykuların derin ve vicdanın tertemiz.
+            </p>
+            <div class="divergence-meter-group">
+              <div class="divergence-meter-item">
+                <div class="divergence-meter-header">
+                  <span id="t-light-m1-lbl">Cepte Kalan Birikim</span>
+                  <span id="t-light-m1-val">+₺240.000</span>
+                </div>
+                <div class="divergence-bar-track">
+                  <div class="divergence-bar-fill" id="t-light-m1-bar" style="width: 75%;"></div>
+                </div>
+              </div>
+              <div class="divergence-meter-item">
+                <div class="divergence-meter-header">
+                  <span id="t-light-m2-lbl">Huzur ve Özsaygı</span>
+                  <span id="t-light-m2-val">%95 Dingin Zihin</span>
+                </div>
+                <div class="divergence-bar-track">
+                  <div class="divergence-bar-fill" id="t-light-m2-bar" style="width: 95%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
        INTERACTIVE SAVINGS CALCULATOR SECTION
        ========================================================================= -->
   <section class="section-padding" id="calculator" style="background: var(--bg-canvas-subtle);">
@@ -395,6 +589,69 @@
   </section>
 
   <!-- =========================================================================
+       MATHEMATICAL HOUSE EDGE REALITY SIMULATOR
+       ========================================================================= -->
+  <section class="section-padding math-section reveal-on-scroll" id="math-sim">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag" id="math-tag">MATEMATİKSEL KANIT</span>
+        <h2 class="section-title" id="math-title">Kumar Makinesini Canlı Simüle Et</h2>
+        <p class="section-subtitle" id="math-sub">
+          Kumar şans oyunu değil, senin parayı kaybetmen için tasarlanmış soğuk bir algoritmadır. ₺10.000 bakiye ile 100 oyun simüle et ve gerçeği gör.
+        </p>
+      </div>
+
+      <div class="math-simulator-box">
+        <div class="math-console-left">
+          <span class="math-lead-badge" id="math-lead-badge">MATEMATİK KANUNU</span>
+          <h3 class="math-lead-title" id="math-lead-title">Kasa Algoritması Neden Asla Kaybetmez?</h3>
+          <p class="math-lead-desc" id="math-lead-desc">
+            Bahis ve slot siteleri negatif matematiksel beklenti (RTP &lt; %90) ile kodlanmıştır. Oynadıkça kaybetmek şanssızlık değil, yazılım kuralıdır.
+          </p>
+          <div class="math-lead-quote" id="math-lead-note">
+            💡 Kazanmanın tek kesin yolu: Oyuna hiç başlamamaktır.
+          </div>
+          <button class="math-run-btn" id="math-run-btn">
+            <span>⚡</span>
+            <span id="math-run-btn-text">100 Oyunu Hızlıca Simüle Et</span>
+          </button>
+        </div>
+
+        <div class="math-console-right">
+          <div class="math-screen-wrap">
+            <div class="math-screen-grid">
+              <div>
+                <span style="font-size:0.75rem; color:#94a3b8; display:block;" id="math-init-label">BAŞLANGIÇ BAKİYESİ</span>
+                <span class="math-metric-num" id="math-init-val">₺10.000</span>
+              </div>
+              <div>
+                <span style="font-size:0.75rem; color:#94a3b8; display:block;" id="math-spins-label">OYNANAN TUR</span>
+                <span class="math-metric-num" id="math-spins-val">0 / 100</span>
+              </div>
+              <div>
+                <span style="font-size:0.75rem; color:#94a3b8; display:block;" id="math-balance-label">KALAN BAKİYE</span>
+                <span class="math-metric-num loss" id="math-current-balance">₺10.000</span>
+              </div>
+            </div>
+
+            <div style="font-size:0.8rem; color:#94a3b8;" id="math-chart-label">KASA ERİME GRAFİĞİ:</div>
+            <div class="math-balance-track">
+              <div class="math-balance-fill" id="math-balance-bar"></div>
+            </div>
+            <div style="font-size:0.75rem; color:#64748b; margin-top:4px;" id="math-status-log">
+              Sistem hazır. Simülasyonu başlat butonuna tıkla.
+            </div>
+          </div>
+
+          <div class="math-result-msg" id="math-result-msg">
+            🎯 <strong>Matematiksel Gerçek:</strong> Algoritma 100 turda ₺10.000 liranın tamamını yuttu. Kasa her zaman kazanır. Kazanmanın tek yolu oynamamaktır!
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
        URGE SURFING (BREATHING TRAINER) SECTION
        ========================================================================= -->
   <section class="section-padding" id="sos">
@@ -408,19 +665,136 @@
       </div>
 
       <div class="breathing-box" id="breath-container">
-        <!-- Visual Breathing Sphere -->
-        <div class="breathing-visual-wrap">
-          <div class="breath-circle-outer"></div>
-          <div class="breath-circle-core" id="breath-core">
-            <span style="font-size:2rem;">🧘</span>
+        <!-- Left: Guided Neuroscience CBT Protocol -->
+        <div class="breath-guide-col">
+          <span class="breath-guide-badge" id="sos-guide-badge">BİLİMSEL 4-4-4 METODU</span>
+          <h3 class="breath-guide-title" id="sos-guide-head">Nörobilimsel Dürtü Sörfü Protokolü</h3>
+          
+          <div class="breath-step-cards">
+            <div class="breath-step-card">
+              <div class="breath-step-num">1</div>
+              <div>
+                <h4 class="breath-step-name" id="sos-step1-title">Derin Nefes Al (4 sn)</h4>
+                <p class="breath-step-text" id="sos-step1-desc">Vagus sinirini aktive eder, vücudu acil durum ve panik modundan çıkarır.</p>
+              </div>
+            </div>
+
+            <div class="breath-step-card">
+              <div class="breath-step-num">2</div>
+              <div>
+                <h4 class="breath-step-name" id="sos-step2-title">Nefesini Tut (4 sn)</h4>
+                <p class="breath-step-text" id="sos-step2-desc">Beyindeki amigdala alarmını dondurur, ani dürtü ve kupon basma baskısını keser.</p>
+              </div>
+            </div>
+
+            <div class="breath-step-card">
+              <div class="breath-step-num">3</div>
+              <div>
+                <h4 class="breath-step-name" id="sos-step3-title">Yavaşça Bırak (4 sn)</h4>
+                <p class="breath-step-text" id="sos-step3-desc">Kalp atış hızını düşürür ve dopamin açlığı yaşayan sinir hücrelerini yatıştırır.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="breath-science-note" id="sos-guide-note">
+            💡 Kumar dürtüsü bir okyanus dalgası gibidir; 10-15 dakikada söner. Savaşma, dalgayı yönet.
           </div>
         </div>
 
-        <div class="breath-action-text" id="breath-action-text">Hazır olduğunda başla</div>
-        <div class="breath-timer-text" id="breath-timer-text"></div>
+        <!-- Right: Interactive Breathing Orb -->
+        <div class="breath-interactive-col">
+          <div class="breathing-visual-wrap">
+            <div class="breath-circle-outer"></div>
+            <div class="breath-circle-core" id="breath-core">
+              <span style="font-size:2rem;">🧘</span>
+            </div>
+          </div>
 
-        <div class="breath-controls">
-          <button class="cta-btn-primary" id="breath-start-btn">Nefes Seansını Başlat</button>
+          <div class="breath-action-text" id="breath-action-text">Hazır olduğunda başla</div>
+          <div class="breath-timer-text" id="breath-timer-text"></div>
+
+          <div class="breath-controls">
+            <button class="cta-btn-primary" id="breath-start-btn">Nefes Seansını Başlat</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       HEARTFELT LETTER TO THE STRUGGLING SOUL
+       ========================================================================= -->
+  <section class="section-padding letter-section reveal-on-scroll" id="letter" style="background: var(--bg-canvas-subtle);">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag" id="letter-tag">YALNIZ DEĞİLSİN</span>
+        <h2 class="section-title" id="letter-title">Sana Açık Bir Mektup</h2>
+        <p class="section-subtitle" id="letter-sub">
+          Bu bataklıkta tek başına değilsin. Zayıf anlarında arkanda duran sarsılmaz bir kalkan var.
+        </p>
+      </div>
+
+      <div class="letter-box">
+        <div class="letter-wax-seal">💌</div>
+
+        <div class="letter-text-body" id="letter-body">
+          <p>
+            Biliyorum. Şu an belki bu sayfaya bakarken içinde derin bir yangın var. Belki dün gece yine kaybettin, belki sabaha karşı yastığına gözyaşlarıyla başını koydun. Belki banka hesabındaki son kalan paraya bakıp <em>"Ben nasıl bu hale geldim?"</em> diyorsun.
+          </p>
+          <p>
+            Kendinden nefret etmeyi hemen şimdi bırak. Sen iradesiz, zayıf ya da kötü bir insan değilsin. Milyarlarca dolarlık yapay zeka ve dopamin tuzaklarıyla donatılmış devasa bir kumar endüstrisi seni biyolojik olarak tuzağa düşürdü.
+          </p>
+          <p>
+            Ama şunu asla unutma: <strong>Kaybettiğin hiçbir parayı kumar oynayarak geri kazanamazsın. Fakat kumarı bugün bırakırsan, kaybettiklerinin yüz katını; itibarını, aileni ve huzurunu geri kazanacaksın.</strong>
+          </p>
+          <p>
+            Nora seni yargılamaz. Nora, zayıf anında araya giren çelikten bir kalkandır. Artık bu savaşı tek başına vermek zorunda değilsin.
+          </p>
+        </div>
+
+        <div class="letter-signature" id="letter-signature">
+          — Eski bir bağımlı ve Nora İyileşme Topluluğu
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       SACRED RECOVERY PLEDGE SECTION
+       ========================================================================= -->
+  <section class="section-padding pledge-section reveal-on-scroll" id="pledge">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-tag" id="pledge-tag">ZİNCİRLERİ KIR</span>
+        <h2 class="section-title" id="pledge-title">Bugün, Hayatının En Cesur Kararını Ver</h2>
+        <p class="section-subtitle" id="pledge-sub">
+          Kendi iradeni Nora kalkanıyla birleştir. Bugün hayatının son bahsi olsun.
+        </p>
+      </div>
+
+      <div class="pledge-box">
+        <div class="pledge-halo"></div>
+        
+        <p class="pledge-quote" id="pledge-quote">
+          "Bugün; beni tüketen, sevdiklerimden çalan ve geleceğimi karartan kumar döngüsünü arkamda bırakacağıma, Nora kalkanı ve kendi irademle yeni bir hayata adım atacağıma YEMİN EDİYORUM."
+        </p>
+
+        <div class="pledge-actions">
+          <button class="pledge-btn" id="pledge-seal-btn">
+            <span>🛡️</span>
+            <span id="pledge-btn-text">Yemini Mühürle: Bugün Son Bahis Olsun</span>
+          </button>
+
+          <div class="pledge-seal-display" id="pledge-seal-display">
+            <span class="pledge-seal-icon">🏆</span>
+            <span class="pledge-seal-title" id="pledge-seal-title">Özgürlüğe İlk Adım Mührün Alındı</span>
+            <span class="pledge-seal-sub" id="pledge-seal-sub">1. Gün Temiz Kalma Yeminin Mühürlendi • Sen Bu Bataklıktan Daha Güçlüsün.</span>
+          </div>
+
+          <div class="pledge-counter-note" id="pledge-counter-note">
+            <span>🔥</span>
+            <span id="pledge-counter-text">Bugün 184 kişi son bahsini yapmamaya yemin etti.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -517,10 +891,10 @@
         <div>
           <h4 class="footer-col-title" id="footer-col-product">Ürün</h4>
           <ul class="footer-links">
-            <li><a href="#features">Özellikler</a></li>
-            <li><a href="#calculator">Tasarruf Hesaplayıcı</a></li>
-            <li><a href="#sos">Dürtü Sörfü SOS</a></li>
-            <li><a href="#faq">Sıkça Sorulan Sorular</a></li>
+            <li><a href="#features" id="fl-features">Özellikler</a></li>
+            <li><a href="#calculator" id="fl-calc">Tasarruf Hesaplayıcı</a></li>
+            <li><a href="#sos" id="fl-sos">Dürtü Sörfü SOS</a></li>
+            <li><a href="#faq" id="fl-faq">Sıkça Sorulan Sorular</a></li>
           </ul>
         </div>
 
@@ -528,10 +902,10 @@
         <div>
           <h4 class="footer-col-title" id="footer-col-legal">Hukuki & Şartlar</h4>
           <ul class="footer-links">
-            <li><a href="/privacy.html">Gizlilik Politikası (Privacy)</a></li>
-            <li><a href="/eula.html">Son Kullanıcı Lisansı (EULA)</a></li>
-            <li><a href="/privacy.html">KVKK & GDPR Uyumluluğu</a></li>
-            <li><a href="/eula.html">Kullanım Koşulları & İptal</a></li>
+            <li><a href="/privacy.html" id="fl-privacy">Gizlilik Politikası (Privacy)</a></li>
+            <li><a href="/eula.html" id="fl-eula">Son Kullanıcı Lisansı (EULA)</a></li>
+            <li><a href="/privacy.html" id="fl-compliance">KVKK & GDPR Uyumluluğu</a></li>
+            <li><a href="/eula.html" id="fl-terms">Kullanım Koşulları & İptal</a></li>
           </ul>
         </div>
 
@@ -539,9 +913,9 @@
         <div>
           <h4 class="footer-col-title" id="footer-col-support">Yardım & Acil</h4>
           <ul class="footer-links">
-            <li><a href="/support.html">Destek & Kriz Masası</a></li>
-            <li><a href="tel:115">Yeşilay YEDAM (115)</a></li>
-            <li><a href="https://www.gamcare.org.uk" target="_blank" rel="noopener">GamCare Uluslararası</a></li>
+            <li><a href="/support.html" id="fl-support">Destek & Kriz Masası</a></li>
+            <li><a href="tel:115" id="fl-yedam">Yeşilay YEDAM (115)</a></li>
+            <li><a href="https://www.gamcare.org.uk" target="_blank" rel="noopener" id="fl-gamcare">GamCare Uluslararası</a></li>
             <li><a href="mailto:destek@noraapp.com">destek@noraapp.com</a></li>
           </ul>
         </div>
@@ -556,13 +930,23 @@
           </span>
         </div>
         <div style="display:flex; gap:16px;">
-          <a href="/privacy.html" style="color:var(--text-tertiary); font-size:0.8rem;">Gizlilik</a>
-          <a href="/eula.html" style="color:var(--text-tertiary); font-size:0.8rem;">EULA</a>
-          <a href="/support.html" style="color:var(--text-tertiary); font-size:0.8rem;">Destek</a>
+          <a href="/privacy.html" style="color:var(--text-tertiary); font-size:0.8rem;" id="footer-bot-privacy">Gizlilik</a>
+          <a href="/eula.html" style="color:var(--text-tertiary); font-size:0.8rem;" id="footer-bot-eula">EULA</a>
+          <a href="/support.html" style="color:var(--text-tertiary); font-size:0.8rem;" id="footer-bot-support">Destek</a>
         </div>
       </div>
     </div>
   </footer>
+
+  <!-- Floating Live Hope Notification Toast -->
+  <div class="live-hope-toast" id="live-hope-toast" aria-live="polite">
+    <div class="toast-avatar" id="toast-avatar">🕊️</div>
+    <div class="toast-content">
+      <span class="toast-author" id="toast-author">İSTANBUL • 42 GÜN TEMİZ</span>
+      <span class="toast-quote" id="toast-quote">"İlk kez maaşımın tek bir kuruşuna dokunmadan aileme verdim. Ağladık."</span>
+    </div>
+    <button class="toast-close-btn" id="toast-close-btn" aria-label="Kapat">×</button>
+  </div>
 
   <script type="module" src="/src/main.js"></script>
 </body>

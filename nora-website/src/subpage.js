@@ -193,6 +193,11 @@ const subpageTranslations = {
     flCompliance: "KVKK & GDPR Uyumluluğu",
     flSupport: "Destek Masası",
     flYEDAM: "Yeşilay YEDAM (115)",
+    flTerms: "Kullanım Koşulları & İptal",
+    flGamcare: "GamCare Uluslararası",
+    botPrivacy: "Gizlilik",
+    botEula: "EULA",
+    botSupport: "Destek",
 
     // Privacy Page
     privacyTitle: "Gizlilik Politikası",
@@ -315,6 +320,11 @@ const subpageTranslations = {
     flCompliance: "GDPR & KVKK Compliance",
     flSupport: "Support Desk",
     flYEDAM: "YEDAM Hotline (115)",
+    flTerms: "Terms of Use & Cancellation",
+    flGamcare: "GamCare International",
+    botPrivacy: "Privacy",
+    botEula: "EULA",
+    botSupport: "Support",
 
     // Privacy Page
     privacyTitle: "Privacy Policy",
@@ -452,6 +462,11 @@ function applyLanguage(lang) {
   setTxt('fl-compliance', t.flCompliance);
   setTxt('fl-support', t.flSupport);
   setTxt('fl-yedam', t.flYEDAM);
+  setTxt('fl-terms', t.flTerms);
+  setTxt('fl-gamcare', t.flGamcare);
+  setTxt('footer-bot-privacy', t.botPrivacy);
+  setTxt('footer-bot-eula', t.botEula);
+  setTxt('footer-bot-support', t.botSupport);
 
   // Detect which subpage we are on
   const path = window.location.pathname.toLowerCase();
