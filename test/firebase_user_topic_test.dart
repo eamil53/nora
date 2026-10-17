@@ -93,6 +93,8 @@ void main() {
       // Reset full app
       await appState.resetFullApp();
       expect(appState.isSubscribed, isFalse);
+      expect(appState.nativeAuthStatus, equals('notDetermined'));
+      expect(appState.shieldedAppsCount, equals(0));
 
       appState.dispose();
     });

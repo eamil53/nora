@@ -330,6 +330,26 @@ class AppState extends ChangeNotifier {
     }
   }
 
+  Future<void> revokeNativePermissions() async {
+    if (kIsWeb) return;
+    try {
+      await _screenTimeChannel.invokeMethod('revokeAuthorization');
+    } catch (e) {
+      debugPrint('Error revoking native Screen Time authorization: $e');
+      try {
+        await _screenTimeChannel.invokeMethod('clearFilters');
+      } catch (_) {}
+    } finally {
+      _nativeAuthStatus = 'notDetermined';
+      _shieldedAppsCount = 0;
+      _shieldedCategoriesCount = 0;
+      _shieldedWebDomainsCount = 0;
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('nora_native_auth_status');
+      notifyListeners();
+    }
+  }
+
   Future<void> fetchShieldedAppInfo() async {
     if (kIsWeb) return;
     try {
@@ -793,6 +813,8 @@ class AppState extends ChangeNotifier {
   }
 
   Future<void> resetFullApp() async {
+    await revokeNativePermissions();
+
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     _isOnboarded = false;
@@ -807,6 +829,10 @@ class AppState extends ChangeNotifier {
     _journalEntries = [];
     _isBlockerEnabled = true;
     _strictShieldMode = true;
+    _nativeAuthStatus = 'notDetermined';
+    _shieldedAppsCount = 0;
+    _shieldedCategoriesCount = 0;
+    _shieldedWebDomainsCount = 0;
     notifyListeners();
 
     // Instant real-time update to Firestore and FCM topic

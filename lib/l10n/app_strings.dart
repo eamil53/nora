@@ -526,8 +526,8 @@ class AppStrings {
       : 'Resets onboarding survey and all local records';
   String get profileResetAppDialogTitle => isTr ? 'Tüm Verileri Sıfırla?' : 'Reset All Data?';
   String get profileResetAppDialogBody => isTr
-      ? 'Bu işlem anket yanıtlarınızı, engelleme listelerini ve tüm yerel kayıtlarınızı sıfırlar. Geri alınamaz.\n\nYapılmış satın almalar Apple hesabınızda tutulur — aboneliğinizi App Store hesabınızdan yönetebilirsiniz.'
-      : 'This resets survey answers, blocklists, and all local records. Cannot be undone.\n\nPurchases remain linked to your Apple ID — manage subscriptions via App Store.';
+      ? 'Bu işlem anket yanıtlarınızı, engelleme listelerini, Ekran Süresi izinlerini ve tüm yerel kayıtlarınızı sıfırlar. Geri alınamaz.\n\nYapılmış satın almalar Apple hesabınızda tutulur — aboneliğinizi App Store hesabınızdan yönetebilirsiniz.'
+      : 'This resets survey answers, blocklists, Screen Time permissions, and all local records. Cannot be undone.\n\nPurchases remain linked to your Apple ID — manage subscriptions via App Store.';
   String get profileResetAppConfirm => isTr ? 'Kalıcı Olarak Sil' : 'Permanently Delete';
 
   String get profileFooterTech => isTr ? 'Nora Koruma Teknolojisi v1.0.0' : 'Nora Protection Technology v1.0.0';

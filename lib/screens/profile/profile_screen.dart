@@ -2,10 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../l10n/app_strings.dart';
 import '../../providers/app_state.dart';
-import '../../services/purchase_service.dart';
 import '../../theme/app_colors.dart';
 import 'vip_membership_details_screen.dart';
 
@@ -1300,10 +1298,10 @@ class ProfileScreen extends StatelessWidget {
             ),
             CupertinoDialogAction(
               isDestructiveAction: true,
-              onPressed: () {
+              onPressed: () async {
                 HapticFeedback.heavyImpact();
-                appState.resetFullApp();
                 Navigator.pop(ctx);
+                await appState.resetFullApp();
               },
               child: Text(
                 s.profileResetAppConfirm,

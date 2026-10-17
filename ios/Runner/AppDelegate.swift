@@ -650,6 +650,52 @@ struct CustomJournalEntrySheet: View {
           result(FlutterError(code: "UNSUPPORTED", message: "iOS 16.0+ is required for Screen Time API", details: nil))
         }
 
+      case "revokeAuthorization":
+        if #available(iOS 16.0, *) {
+          self.store.webContent.blockedByFilter = nil
+          self.store.shield.applications = nil
+          self.store.shield.applicationCategories = nil
+          self.store.shield.webDomains = nil
+          self.store.application.denyAppRemoval = nil
+          self.store.application.denyAppInstallation = nil
+          UserDefaults.standard.removeObject(forKey: self.selectionStorageKey)
+
+          AuthorizationCenter.shared.revokeAuthorization { authResult in
+            DispatchQueue.main.async {
+              switch authResult {
+              case .success:
+                print("[Nora] FamilyControls authorization successfully revoked.")
+                result(true)
+              case .failure(let error):
+                print("[Nora] FamilyControls revokeAuthorization failed: \(error.localizedDescription)")
+                result(FlutterError(code: "REVOKE_FAILED", message: error.localizedDescription, details: nil))
+              }
+            }
+          }
+        } else if #available(iOS 15.0, *) {
+          self.store.webContent.blockedByFilter = nil
+          self.store.shield.applications = nil
+          self.store.shield.applicationCategories = nil
+          self.store.application.denyAppRemoval = nil
+          self.store.application.denyAppInstallation = nil
+          UserDefaults.standard.removeObject(forKey: self.selectionStorageKey)
+
+          AuthorizationCenter.shared.revokeAuthorization { authResult in
+            DispatchQueue.main.async {
+              switch authResult {
+              case .success:
+                print("[Nora] FamilyControls authorization successfully revoked.")
+                result(true)
+              case .failure(let error):
+                print("[Nora] FamilyControls revokeAuthorization failed: \(error.localizedDescription)")
+                result(FlutterError(code: "REVOKE_FAILED", message: error.localizedDescription, details: nil))
+              }
+            }
+          }
+        } else {
+          result(true)
+        }
+
       case "checkAuthorizationStatus":
         if #available(iOS 16.0, *) {
           let status = AuthorizationCenter.shared.authorizationStatus
@@ -748,6 +794,7 @@ struct CustomJournalEntrySheet: View {
           if #available(iOS 16.0, *) {
             self.store.shield.webDomains = nil
           }
+          UserDefaults.standard.removeObject(forKey: self.selectionStorageKey)
           result(true)
         } else {
           result(true)
