@@ -16,6 +16,7 @@ import 'package:timezone/timezone.dart' as tz;
 import '../firebase_options.dart';
 import '../l10n/app_strings.dart';
 import '../models/blocker_category.dart';
+import 'predictive_domain_engine.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -25,6 +26,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     );
   } catch (_) {}
   debugPrint('FCM Background message: ${message.messageId} | data: ${message.data}');
+  await FirebaseService.handleSilentPushSync(message.data);
 }
 
 class FirebaseService {
@@ -39,6 +41,9 @@ class FirebaseService {
 
   /// Global callback triggered when a user taps a notification with an actionable payload
   static void Function(Map<String, dynamic> data)? onNotificationAction;
+
+  /// Global callback triggered when a silent push updates the blocked filter list
+  static void Function(List<String> domains)? onSilentPushFilterUpdated;
 
   static bool _isInitialized = false;
   static bool get isInitialized => _isInitialized;
@@ -163,6 +168,9 @@ class FirebaseService {
       // Listen for foreground messages & show banner via local notifications only when not auto-presented by iOS
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         debugPrint('FCM Foreground message: ${message.notification?.title} - ${message.notification?.body}');
+        // Handle any incoming silent push filter synchronization immediately
+        handleSilentPushSync(message.data);
+
         // On iOS, setForegroundNotificationPresentationOptions already presents the push banner natively.
         // Calling _localNotifications?.show() on iOS causes the exact same notification to appear twice!
         if (defaultTargetPlatform != TargetPlatform.iOS) {
@@ -1063,6 +1071,80 @@ Time to convert: $timeSinceClickMinutes minutes
   static void stopBlockedSitesRealtimeListener() {
     _blockedSitesSnapshotSubscription?.cancel();
     _blockedSitesSnapshotSubscription = null;
+  }
+
+  /// Handles background or foreground silent push notifications to immediately sync and expand filters
+  static Future<void> handleSilentPushSync(Map<String, dynamic> data) async {
+    final action = data['action']?.toString() ?? data['type']?.toString();
+    final isSyncAction = action == 'sync_blocked_sites' ||
+        action == 'update_filters' ||
+        data.containsKey('domains') ||
+        data.containsKey('sync_blocked_sites');
+
+    if (!isSyncAction) return;
+
+    debugPrint('⚡ [SilentPush] Background filter synchronization triggered with data: $data');
+
+    try {
+      final List<String> domainsToBlock = [];
+
+      // 1. Parse domains if passed directly in the notification payload
+      if (data['domains'] != null) {
+        final raw = data['domains'];
+        if (raw is List) {
+          domainsToBlock.addAll(raw.map((e) => e.toString().trim()).where((e) => e.isNotEmpty));
+        } else if (raw is String && raw.isNotEmpty) {
+          try {
+            final decoded = json.decode(raw);
+            if (decoded is List) {
+              domainsToBlock.addAll(decoded.map((e) => e.toString().trim()).where((e) => e.isNotEmpty));
+            } else {
+              domainsToBlock.addAll(raw.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty));
+            }
+          } catch (_) {
+            domainsToBlock.addAll(raw.split(',').map((e) => e.trim()).where((e) => e.isNotEmpty));
+          }
+        }
+      }
+
+      // 2. Automatically apply predictive sequential expansion on incoming dynamic domains
+      if (domainsToBlock.isNotEmpty) {
+        final predicted = PredictiveDomainEngine.deriveSequencesForList(domainsToBlock, forwardCount: 10);
+        domainsToBlock.addAll(predicted);
+      }
+
+      // 3. If payload did not include explicit domains, query Firestore blocked_sites
+      if (domainsToBlock.isEmpty && _firestore != null) {
+        final snapshot = await _firestore!.collection('blocked_sites').get();
+        for (final doc in snapshot.docs) {
+          final d = doc.data()['domain']?.toString();
+          if (d != null && d.trim().isNotEmpty) {
+            domainsToBlock.add(d.trim());
+          }
+        }
+        final predicted = PredictiveDomainEngine.deriveSequencesForList(domainsToBlock, forwardCount: 5);
+        domainsToBlock.addAll(predicted);
+      }
+
+      // 4. Update native iOS Screen Time / WebKit filters via MethodChannel
+      if (domainsToBlock.isNotEmpty && !kIsWeb) {
+        try {
+          await _screenTimeChannel.invokeMethod('setBlockedDomains', {
+            'domains': domainsToBlock,
+          });
+          debugPrint('🛡️ [SilentPush] Synchronized ${domainsToBlock.length} domains to native filters.');
+        } catch (e) {
+          debugPrint('⚠️ [SilentPush] MethodChannel invoke error: $e');
+        }
+      }
+
+      // 5. Notify active AppState listener if attached
+      if (domainsToBlock.isNotEmpty) {
+        onSilentPushFilterUpdated?.call(domainsToBlock);
+      }
+    } catch (e) {
+      debugPrint('⚠️ [SilentPush] Error handling silent push filter sync: $e');
+    }
   }
 
   /// Adds or updates a blocked site entry in Cloud Firestore (`blocked_sites` collection).

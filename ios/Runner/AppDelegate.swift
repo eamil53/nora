@@ -571,7 +571,26 @@ struct CustomJournalEntrySheet: View {
     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
   ) {
     Messaging.messaging().appDidReceiveMessage(userInfo)
-    super.application(application, didReceiveRemoteNotification: userInfo, fetchCompletionHandler: completionHandler)
+
+    var didUpdate = false
+    if #available(iOS 15.0, *) {
+      if let domains = userInfo["domains"] as? [String], !domains.isEmpty {
+        self.updateWebFilters(domains: domains)
+        didUpdate = true
+        print("⚡ [AppDelegate] Silent Push updated \(domains.count) web filters directly.")
+      } else if let domainStr = userInfo["domains"] as? String, !domainStr.isEmpty {
+        let parts = domainStr.split(separator: ",").map { String($0.trimmingCharacters(in: .whitespacesAndNewlines)) }
+        if !parts.isEmpty {
+          self.updateWebFilters(domains: parts)
+          didUpdate = true
+          print("⚡ [AppDelegate] Silent Push updated \(parts.count) web filters from string.")
+        }
+      }
+    }
+
+    super.application(application, didReceiveRemoteNotification: userInfo) { result in
+      completionHandler(didUpdate ? .newData : result)
+    }
   }
 
   override func application(

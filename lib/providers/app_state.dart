@@ -9,12 +9,14 @@ import '../models/blocker_category.dart';
 import '../models/journal_entry.dart';
 import '../services/firebase_service.dart';
 import '../services/purchase_service.dart';
+import '../services/predictive_domain_engine.dart';
 import '../l10n/app_strings.dart';
 
 class AppState extends ChangeNotifier {
   static const MethodChannel _screenTimeChannel = MethodChannel('com.nora.blocker/screentime');
 
   bool _isLoading = true;
+  bool _isDisposed = false;
   bool _isOnboarded = false;
   bool _isSubscribed = false;
   String _activePlan = 'annual'; // 'monthly' or 'annual'
@@ -268,6 +270,12 @@ class AppState extends ChangeNotifier {
         },
       );
 
+      // Listen for Silent Push background/foreground filter sync triggers
+      FirebaseService.onSilentPushFilterUpdated = (updatedDomains) async {
+        debugPrint('⚡ [AppState] Silent push filter update triggered: ${updatedDomains.length} domains');
+        await syncNativeFilters();
+      };
+
       // Seed initial default blocked sites into Firestore if collection is empty
       await FirebaseService.seedInitialBlockedSitesIfEmpty(_categories);
     } catch (e) {
@@ -432,7 +440,21 @@ class AppState extends ChangeNotifier {
     }
     bundleIdsToBlock.addAll(_serverBlockedBundleIds);
 
-    // 2. Active category sample domains & bundle IDs
+    // 2.5 Proactively derive sequential numeric mirror predictions
+    final activeNumberedSeeds = [
+      ...topPriorityMirrors,
+      ..._customBlockedDomains,
+      ..._serverBlockedDomains,
+    ];
+    final predictedUpcoming = PredictiveDomainEngine.deriveSequencesForList(
+      activeNumberedSeeds,
+      forwardCount: 5,
+    );
+    for (final domain in predictedUpcoming) {
+      addCleanDomain(domain);
+    }
+
+    // 3. Active category sample domains & bundle IDs
     for (final cat in _categories) {
       if (cat.isEnabled) {
         for (final domain in cat.sampleDomains) {
@@ -841,11 +863,13 @@ class AppState extends ChangeNotifier {
 
   // Domain Check Engine Simulation
   DomainCheckResult checkDomain(String urlOrDomain) {
+    final isTr = _resolvedLanguage == 'tr';
+
     if (!_isBlockerEnabled) {
       return DomainCheckResult(
         domain: urlOrDomain,
         isBlocked: false,
-        reason: 'Koruma Kalkanı kapalı.',
+        reason: isTr ? 'Koruma Kalkanı kapalı.' : 'Protection Shield is disabled.',
       );
     }
 
@@ -857,8 +881,8 @@ class AppState extends ChangeNotifier {
         return DomainCheckResult(
           domain: clean,
           isBlocked: true,
-          matchedCategory: 'Sunucu Tarafından Engellenen Site (Firestore)',
-          reason: 'Bu alan adı Firestore veritabanı tarafından otomatik olarak engellenmiştir.',
+          matchedCategory: isTr ? 'Sunucu Tarafından Engellenen Site (Firestore)' : 'Server-Managed Blocked Site (Firestore)',
+          reason: isTr ? 'Bu alan adı Firestore veritabanı tarafından otomatik olarak engellenmiştir.' : 'This domain is blocked by the global cloud database.',
         );
       }
     }
@@ -869,14 +893,36 @@ class AppState extends ChangeNotifier {
         return DomainCheckResult(
           domain: clean,
           isBlocked: true,
-          matchedCategory: 'Özel Engelleme Listesi',
-          reason: 'Bu alan adı sizin özel engelleme listenizde yer alıyor.',
+          matchedCategory: isTr ? 'Özel Engelleme Listesi' : 'Custom Blocklist',
+          reason: isTr ? 'Bu alan adı sizin özel engelleme listenizde yer alıyor.' : 'This domain is included in your custom blocklist.',
         );
       }
     }
 
+    // 2.5 Predictive Numeric Sequential Engine check (Catches dynamic sequential mirrors before DB sync)
+    final allKnownSeeds = <String>{
+      ..._serverBlockedDomains,
+      ..._customBlockedDomains,
+      '1-king-837.club',
+      'meritking837.com',
+      'bets10-912.xyz',
+      'jojobet-452.site',
+      'cratos-385.top',
+      'holiganbet999.vip',
+    };
+    if (PredictiveDomainEngine.isPredictiveMatch(clean, allKnownSeeds)) {
+      final predictiveReason = PredictiveDomainEngine.getPredictiveBlockReason(clean, allKnownSeeds, isTr: isTr) ??
+          (isTr ? 'Dinamik ardışık numara ve ayna alan adı tespiti.' : 'Dynamic sequential gambling mirror pattern detected.');
+      return DomainCheckResult(
+        domain: clean,
+        isBlocked: true,
+        matchedCategory: isTr ? 'Prediktif Sayısal Ayna (DGA)' : 'Predictive Dynamic Mirror (DGA)',
+        reason: predictiveReason,
+      );
+    }
+
     // 3. Dynamic Mirror Pattern & TLD Filter (Catches generated domains like 1-king-837.club, meritking837.com, bets10-912.xyz)
-    final dynamicMirrorResult = _checkDynamicMirrorPattern(clean);
+    final dynamicMirrorResult = _checkDynamicMirrorPattern(clean, isTr: isTr);
     if (dynamicMirrorResult != null) {
       return dynamicMirrorResult;
     }
@@ -901,7 +947,9 @@ class AppState extends ChangeNotifier {
             domain: clean,
             isBlocked: true,
             matchedCategory: cat.title,
-            reason: '${cat.title} kategorisi kapsamında erişim engellendi!',
+            reason: isTr
+                ? '${cat.title} kategorisi kapsamında erişim engellendi!'
+                : 'Access restricted under ${cat.title} category.',
           );
         }
       }
@@ -912,8 +960,10 @@ class AppState extends ChangeNotifier {
         return DomainCheckResult(
           domain: clean,
           isBlocked: true,
-          matchedCategory: 'Otomatik Bahis & Kumar Tespiti',
-          reason: 'Zararlı kumar/bahis anahtar kelimesi ("$kw") tespit edildi!',
+          matchedCategory: isTr ? 'Otomatik Bahis & Kumar Tespiti' : 'Automated Gambling Detection',
+          reason: isTr
+              ? 'Zararlı kumar/bahis anahtar kelimesi ("$kw") tespit edildi!'
+              : 'High-risk gambling keyword ("$kw") detected!',
         );
       }
     }
@@ -921,12 +971,14 @@ class AppState extends ChangeNotifier {
     return DomainCheckResult(
       domain: clean,
       isBlocked: false,
-      reason: 'Güvenli alan adı. Herhangi bir kumar/bahis içeriği tespit edilmedi.',
+      reason: isTr
+          ? 'Güvenli alan adı. Herhangi bir kumar/bahis içeriği tespit edilmedi.'
+          : 'Safe domain. No gambling or betting content detected.',
     );
   }
 
   /// Advanced dynamic mirror pattern and TLD detection (e.g., 1-king-837.club, meritking837.com, bets10-912.xyz)
-  DomainCheckResult? _checkDynamicMirrorPattern(String cleanDomain) {
+  DomainCheckResult? _checkDynamicMirrorPattern(String cleanDomain, {bool isTr = false}) {
     final suspiciousTlds = {
       'club', 'xyz', 'site', 'fun', 'online', 'top', 'vip', 'link', 'bet',
       'casino', 'live', 'win', 'monster', 'cyou', 'bid', 'click', 'party',
@@ -956,8 +1008,10 @@ class AppState extends ChangeNotifier {
         return DomainCheckResult(
           domain: cleanDomain,
           isBlocked: true,
-          matchedCategory: 'Dinamik Ayna Kumar Sitesi (AI Pattern Filter)',
-          reason: 'Dinamik illegal kumar ayna adresi ("$domainBody.$tld") otomatik kalkan tarafından engellendi.',
+          matchedCategory: isTr ? 'Dinamik Ayna Kumar Sitesi (AI Pattern Filter)' : 'Dynamic Gambling Mirror (AI Pattern Filter)',
+          reason: isTr
+              ? 'Dinamik illegal kumar ayna adresi ("$domainBody.$tld") otomatik kalkan tarafından engellendi.'
+              : 'Dynamic gambling mirror address ("$domainBody.$tld") was intercepted by AI Shield.',
         );
       }
 
@@ -968,8 +1022,10 @@ class AppState extends ChangeNotifier {
             return DomainCheckResult(
               domain: cleanDomain,
               isBlocked: true,
-              matchedCategory: 'Şüpheli TLD Kumar Ayna Filtresi',
-              reason: 'Şüpheli kumar uzantısı (.$tld) ve kumar markası ("$root") tespit edilerek erişim engellendi.',
+              matchedCategory: isTr ? 'Şüpheli TLD Kumar Ayna Filtresi' : 'Suspicious TLD Mirror Filter',
+              reason: isTr
+                  ? 'Şüpheli kumar uzantısı (.$tld) ve kumar markası ("$root") tespit edilerek erişim engellendi.'
+                  : 'Suspicious gambling extension (.$tld) and operator keyword ("$root") detected.',
             );
           }
         }
@@ -1027,9 +1083,17 @@ class AppState extends ChangeNotifier {
   }
 
   @override
+  void notifyListeners() {
+    if (_isDisposed) return;
+    super.notifyListeners();
+  }
+
+  @override
   void dispose() {
+    _isDisposed = true;
     _vpnPollingTimer?.cancel();
     FirebaseService.stopUserRealtimeListener();
+    FirebaseService.onSilentPushFilterUpdated = null;
     super.dispose();
   }
 }
