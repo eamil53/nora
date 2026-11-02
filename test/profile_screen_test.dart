@@ -83,6 +83,10 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
     expect(find.text('Temiz Sayfayı Aç'), findsNothing);
 
+    // 5.5 Verify Legal links (Privacy Policy & Terms of Use EULA)
+    expect(find.text('Gizlilik Politikası'), findsOneWidget);
+    expect(find.text('Kullanım Koşulları'), findsOneWidget);
+
     // 6. Test opening Reset Full App native iOS dialog
     await tester.ensureVisible(find.text('Tüm Uygulama Verilerini Sıfırla'));
     await tester.pump(const Duration(milliseconds: 300));

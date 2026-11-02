@@ -85,11 +85,10 @@ void main() {
 
       // Plans in EN
       expect(find.text('ANNUAL PROTECTION'), findsOneWidget);
-      expect(find.text('7 DAYS FREE'), findsOneWidget);
+      expect(find.text('7 days free trial'), findsOneWidget);
       expect(find.text('Start 7-Day Free Trial'), findsOneWidget);
 
-      // Verify 'Today' and 'then' localization (English)
-      expect(find.text('Today'), findsWidgets);
+      // Verify 'then' localization (English)
       expect(find.textContaining('then '), findsWidgets);
       expect(find.text('Bugün'), findsNothing);
       expect(find.textContaining('sonra '), findsNothing);

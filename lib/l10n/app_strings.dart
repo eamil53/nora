@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/widgets.dart';
 
 /// Nora Uygulaması Yerelleştirme Sınıfı (TR & EN)
@@ -119,35 +121,43 @@ class AppStrings {
   // Plans
   String get planAnnualTitle => isTr ? 'YILLIK KORUMA' : 'ANNUAL PROTECTION';
   String get planAnnualBadge => isTr ? 'EN POPÜLER • %42 KAZANÇ' : 'MOST POPULAR • 42% SAVINGS';
-  String get planAnnualTrialBadge => isTr ? '7 GÜN ÜCRETSİZ' : '7 DAYS FREE';
+  String get planAnnualTrialBadge => isTr ? '7 gün ücretsiz' : '7 days free trial';
   String get planAnnualPeriod => isTr ? ' /yıl' : ' /yr';
   String planAnnualSubtext(String monthlyEq, int days) => isTr
       ? 'Sadece $monthlyEq /aylık • $days günde amorti'
       : 'Only $monthlyEq /month • Pays for itself in $days days';
 
   String get planMonthlyTitle => isTr ? 'AYLIK KORUMA' : 'MONTHLY PROTECTION';
-  String get planMonthlyTrialBadge => isTr ? '3 GÜN ÜCRETSİZ' : '3 DAYS FREE';
+  String get planMonthlyTrialBadge => isTr ? '3 gün ücretsiz' : '3 days free trial';
   String get planMonthlyPeriod => isTr ? ' /aylık' : ' /mo';
   String planMonthlySubtext(int days) => isTr
       ? 'Esnek aylık yenileme • $days günde amorti'
       : 'Flexible monthly renewal • Pays for itself in $days days';
 
-  String get zeroToday => isTr ? '0 ₺' : '0 ₺';
+  String get zeroToday => isTr ? '0 ₺' : '\$0';
   String get todayLabel => isTr ? 'Bugün' : 'Today';
   String thenLabel(String price, String period) => isTr ? 'sonra $price$period' : 'then $price$period';
 
   // CTA & Disclosures
   String paywallCtaText(int days) => isTr ? '$days Gün Ücretsiz Denemeyi Başlat' : 'Start $days-Day Free Trial';
   String paywallCtaSubtext(int days, String price, String period) => isTr
-      ? 'Bugün 0 ₺ • $days gün sonra $price$period • Dilediğin an iptal et'
-      : '0 ₺ today • $price$period after $days days • Cancel anytime';
-  String get paywallZeroRisk => isTr ? 'Bugün 0 ₺ • İstediğin Zaman İptal Et • Sıfır Risk' : '0 ₺ Today • Cancel Anytime • Zero Risk';
-  String get paywallLegalDisclosure => isTr
-      ? 'Deneme süresi bitiminden en az 24 saat önce iptal edilmediği takdirde aboneliğiniz seçilen plan üzerinden otomatik yenilenir. İstediğiniz an App Store veya Google Play abonelik ayarlarınızdan iptal edebilirsiniz.'
-      : 'Subscription automatically renews at chosen plan rate unless cancelled at least 24 hours before trial ends. Manage or cancel anytime in App Store or Google Play account settings.';
+      ? '$days gün ücretsiz, sonra $price$period • Dilediğin an iptal et'
+      : '$days days free, then $price$period • Cancel anytime';
+  String get paywallZeroRisk => isTr ? 'İstediğin Zaman İptal Et • Sıfır Risk' : 'Cancel Anytime • 100% Risk-Free';
+  String get paywallLegalDisclosure {
+    final isAndroid = !kIsWeb && Platform.isAndroid;
+    final storeName = isAndroid ? 'Google Play' : 'App Store';
+    return isTr
+        ? 'Deneme süresi bitiminden en az 24 saat önce iptal edilmediği takdirde aboneliğiniz seçilen plan üzerinden otomatik yenilenir. İstediğiniz an $storeName abonelik ayarlarınızdan iptal edebilirsiniz.'
+        : 'Subscription automatically renews at chosen plan rate unless cancelled at least 24 hours before trial ends. Manage or cancel anytime in $storeName account settings.';
+  }
   String get restorePurchases => isTr ? 'Satın Almayı Geri Yükle' : 'Restore Purchases';
   String get termsOfUse => isTr ? 'Kullanım Koşulları' : 'Terms of Use';
   String get privacyPolicy => isTr ? 'Gizlilik Politikası' : 'Privacy Policy';
+
+  /// Official legal document URLs for App Store compliance
+  static const String privacyPolicyUrl = 'https://nora-sand-mu.vercel.app/privacy.html';
+  static const String termsOfUseUrl = 'https://nora-sand-mu.vercel.app/eula.html';
 
   // Abandoned Trial Notification (Sent 5 mins after app closed without starting trial)
   String get abandonedTrialNotificationTitle => isTr

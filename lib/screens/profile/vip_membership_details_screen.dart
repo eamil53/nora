@@ -498,7 +498,7 @@ class VipMembershipDetailsScreen extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              result != null ? s.vipDetailsRestoredSuccess : (s.isTr ? 'Satın alımlar güncellendi.' : 'Purchases updated.'),
+              result.hasActiveSubscription ? s.vipDetailsRestoredSuccess : (s.isTr ? 'Satın alımlar güncellendi.' : 'Purchases updated.'),
             ),
             backgroundColor: const Color(0xFF00E676),
           ),

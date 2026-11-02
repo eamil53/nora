@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../l10n/app_strings.dart';
 import '../../providers/app_state.dart';
 import '../../theme/app_colors.dart';
@@ -775,25 +776,22 @@ class ProfileScreen extends StatelessWidget {
       _buildDivider(context),
       _buildSettingTile(
         context: context,
-        icon: CupertinoIcons.eye_slash_fill,
+        icon: CupertinoIcons.shield_fill,
         iconColor: const Color(0xFF10B981),
-        title: s.profileTilePrivacy,
-        subtitle: s.profileTilePrivacySub,
-        trailing: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-          decoration: BoxDecoration(
-            color: const Color(0xFF10B981).withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            s.profilePillLocal,
-            style: GoogleFonts.plusJakartaSans(
-              color: const Color(0xFF059669),
-              fontSize: 10.5,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
+        title: s.privacyPolicy,
+        subtitle: s.isTr ? '100% Cihaz İçi Gizlilik • Sıfır Veri Takibi' : '100% On-Device Privacy • Zero Tracking',
+        onTap: () => _openUrl(AppStrings.privacyPolicyUrl),
+        trailing: Icon(CupertinoIcons.chevron_right, color: colors.textTertiary, size: 15),
+      ),
+      _buildDivider(context),
+      _buildSettingTile(
+        context: context,
+        icon: CupertinoIcons.doc_text_fill,
+        iconColor: const Color(0xFF3B82F6),
+        title: s.termsOfUse,
+        subtitle: s.isTr ? 'Kullanım Koşulları ve Lisans Sözleşmesi (EULA)' : 'End User License Agreement (EULA)',
+        onTap: () => _openUrl(AppStrings.termsOfUseUrl),
+        trailing: Icon(CupertinoIcons.chevron_right, color: colors.textTertiary, size: 15),
       ),
     ]);
   }
@@ -1324,5 +1322,17 @@ class ProfileScreen extends StatelessWidget {
         builder: (_) => VipMembershipDetailsScreen(appState: appState),
       ),
     );
+  }
+
+  Future<void> _openUrl(String url) async {
+    HapticFeedback.lightImpact();
+    try {
+      final uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
+    } catch (e) {
+      debugPrint('Error launching url: $e');
+    }
   }
 }

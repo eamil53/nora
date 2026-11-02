@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../l10n/app_strings.dart';
 import '../../services/purchase_service.dart';
 import '../../theme/app_colors.dart';
@@ -122,15 +123,14 @@ class _PaywallScreenState extends State<PaywallScreen> {
   }
 
   String get _trialCtaSubtext {
-    final zero = widget.currencySymbol == '₺' ? '0 ₺' : '${widget.currencySymbol}0';
     if (_selectedPlan == 'annual') {
       return s.isTr
-          ? 'Bugün $zero • 7 gün sonra $_annualPriceDisplay/yıl • Dilediğin an iptal et'
-          : '$zero today • $_annualPriceDisplay/yr after 7 days • Cancel anytime';
+          ? '7 gün ücretsiz, sonra $_annualPriceDisplay/yıl • Dilediğin an iptal et'
+          : '7 days free, then $_annualPriceDisplay/yr • Cancel anytime';
     } else {
       return s.isTr
-          ? 'Bugün $zero • 3 gün sonra $_monthlyPriceDisplay/ay • Dilediğin an iptal et'
-          : '$zero today • $_monthlyPriceDisplay/mo after 3 days • Cancel anytime';
+          ? '3 gün ücretsiz, sonra $_monthlyPriceDisplay/ay • Dilediğin an iptal et'
+          : '3 days free, then $_monthlyPriceDisplay/mo • Cancel anytime';
     }
   }
 
@@ -240,6 +240,18 @@ class _PaywallScreenState extends State<PaywallScreen> {
           ),
         ),
       );
+    }
+  }
+
+  Future<void> _openLegalUrl(String url) async {
+    HapticFeedback.lightImpact();
+    try {
+      final uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
+    } catch (e) {
+      debugPrint('Error launching legal url: $e');
     }
   }
 
@@ -605,9 +617,9 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       children: [
                         _buildFooterLink(s.restorePurchases, _handleRestorePurchases),
                         Text('•', style: TextStyle(color: context.colors.textSecondary.withValues(alpha: 0.4), fontSize: 11)),
-                        _buildFooterLink(s.termsOfUse, () {}),
+                        _buildFooterLink(s.termsOfUse, () => _openLegalUrl(AppStrings.termsOfUseUrl)),
                         Text('•', style: TextStyle(color: context.colors.textSecondary.withValues(alpha: 0.4), fontSize: 11)),
-                        _buildFooterLink(s.privacyPolicy, () {}),
+                        _buildFooterLink(s.privacyPolicy, () => _openLegalUrl(AppStrings.privacyPolicyUrl)),
                       ],
                     ),
 
@@ -1190,51 +1202,26 @@ class _PaywallScreenState extends State<PaywallScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Wrap(
-              spacing: 6,
-              runSpacing: 4,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF00E676), Color(0xFF10B981)],
-                    ),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Text(
-                    trialBadge,
-                    style: GoogleFonts.plusJakartaSans(
-                      color: const Color(0xFF070B14),
-                      fontSize: 9.5,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: 0.5,
-                    ),
+            if (badge != null) ...[
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF6366F1).withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: const Color(0xFF6366F1).withValues(alpha: 0.4)),
+                ),
+                child: Text(
+                  badge,
+                  style: GoogleFonts.plusJakartaSans(
+                    color: const Color(0xFF818CF8),
+                    fontSize: 9.5,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.4,
                   ),
                 ),
-                if (badge != null) ...[
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF6366F1).withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: const Color(0xFF6366F1).withValues(alpha: 0.4)),
-                    ),
-                    child: Text(
-                      badge,
-                      style: GoogleFonts.plusJakartaSans(
-                        color: const Color(0xFF818CF8),
-                        fontSize: 9.5,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: 0.4,
-                      ),
-                    ),
-                  ),
-                ],
-              ],
-            ),
-            const SizedBox(height: 8),
+              ),
+              const SizedBox(height: 8),
+            ],
             Row(
               children: [
                 // Radio Indicator
@@ -1245,7 +1232,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                     shape: BoxShape.circle,
                     color: isSelected ? const Color(0xFF00E676) : Colors.transparent,
                     border: Border.all(
-                      color: isSelected ? const Color(0xFF00E676) : context.colors.border,
+                       color: isSelected ? const Color(0xFF00E676) : context.colors.border,
                       width: 2,
                     ),
                   ),
@@ -1296,30 +1283,37 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         textBaseline: TextBaseline.alphabetic,
                         children: [
                           Text(
-                            widget.currencySymbol == '₺' ? '0 ₺' : '${widget.currencySymbol}0',
+                            priceDisplay,
                             style: GoogleFonts.outfit(
-                              color: const Color(0xFF00E676),
-                              fontSize: 19,
+                              color: isSelected ? const Color(0xFF00E676) : context.colors.textPrimary,
+                              fontSize: 18,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
-                          const SizedBox(width: 3),
                           Text(
-                            s.todayLabel,
+                            periodDisplay,
                             style: GoogleFonts.plusJakartaSans(
-                              color: const Color(0xFF00E676),
-                              fontSize: 10.5,
-                              fontWeight: FontWeight.w700,
+                              color: context.colors.textSecondary,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
                       ),
-                      Text(
-                        s.thenLabel(priceDisplay, periodDisplay),
-                        style: GoogleFonts.plusJakartaSans(
-                          color: context.colors.textSecondary,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
+                      const SizedBox(height: 3),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF00E676).withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Text(
+                          trialBadge,
+                          style: GoogleFonts.plusJakartaSans(
+                            color: const Color(0xFF00E676),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ],

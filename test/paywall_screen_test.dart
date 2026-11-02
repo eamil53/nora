@@ -73,11 +73,14 @@ void main() {
 
     // 4. Check Plans & Trial Badges
     expect(find.text('YILLIK KORUMA'), findsOneWidget);
-    expect(find.text('7 GÜN ÜCRETSİZ'), findsOneWidget);
+    expect(find.text('7 gün ücretsiz'), findsOneWidget);
     expect(find.text('EN POPÜLER • %42 KAZANÇ'), findsOneWidget);
     expect(find.text('AYLIK KORUMA'), findsOneWidget);
-    expect(find.text('3 GÜN ÜCRETSİZ'), findsOneWidget);
+    expect(find.text('3 gün ücretsiz'), findsOneWidget);
     expect(find.text('7 Gün Ücretsiz Denemeyi Başlat'), findsOneWidget);
+    expect(find.text('Kullanım Koşulları'), findsOneWidget);
+    expect(find.text('Gizlilik Politikası'), findsOneWidget);
+    expect(find.text('Satın Almayı Geri Yükle'), findsOneWidget);
 
     // Switch to Monthly plan
     await tester.ensureVisible(find.text('AYLIK KORUMA'));
